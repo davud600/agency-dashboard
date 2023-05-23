@@ -1,11 +1,11 @@
 import { type NextPage } from "next";
 import Head from "next/head";
-import { signIn, signOut, useSession } from "next-auth/react";
+// import { signIn, signOut, useSession } from "next-auth/react";
 
-import { api } from "~/utils/api";
-import { ChangeEvent, useEffect, useState } from "react";
+// import { api } from "~/utils/api";
+import { ChangeEvent, MouseEventHandler, useEffect, useState } from "react";
 
-type TicketStatus = "Not Paid" | "Paid";
+type TicketPaymentStatus = "Not Paid" | "Paid";
 
 interface Ticket {
   bookingNum: number;
@@ -13,7 +13,7 @@ interface Ticket {
   lastName: string;
   email: string;
   phoneNumber: string;
-  status: TicketStatus;
+  paymentStatus: TicketPaymentStatus;
   price: number;
 }
 
@@ -24,8 +24,26 @@ const ticketsList: Ticket[] = [
     lastName: "fisteku",
     email: "filoni@example.com",
     phoneNumber: "049 419 902",
-    status: "Not Paid",
+    paymentStatus: "Not Paid",
     price: 200,
+  },
+  {
+    bookingNum: 15,
+    firstName: "filonii",
+    lastName: "fistekuueuye",
+    email: "filoni@example.com",
+    phoneNumber: "049 109 502",
+    paymentStatus: "Paid",
+    price: 198.65,
+  },
+  {
+    bookingNum: 62,
+    firstName: "filonsoif",
+    lastName: "papapa",
+    email: "filonisdf@example.com",
+    phoneNumber: "045 520 013",
+    paymentStatus: "Not Paid",
+    price: 374.99,
   },
 ];
 
@@ -46,7 +64,7 @@ const TicketsList: any = ({ filteredTicketsList }: TicketsListProps) => {
       <td className="px-6 py-4">{ticket.email}</td>
       <td className="px-6 py-4">{ticket.phoneNumber}</td>
       <td className="px-6 py-4">{ticket.price}€</td>
-      <td className="px-6 py-4">{ticket.status}</td>
+      <td className="px-6 py-4">{ticket.paymentStatus}</td>
       <td className="px-6 py-4">
         <a href="#" className="font-medium text-blue-600 hover:underline">
           Edit
@@ -56,24 +74,165 @@ const TicketsList: any = ({ filteredTicketsList }: TicketsListProps) => {
   ));
 };
 
+interface PaymentStatusDropdownProps {
+  setPaymentStatusFilter: Function;
+}
+
+const PaymentStatusDropdown: any = ({
+  setPaymentStatusFilter,
+}: PaymentStatusDropdownProps) => {
+  const [dropdownOpen, setDropdownOpen] = useState(false);
+
+  return (
+    <div>
+      <button
+        id="paymentStatusDropdownBtn"
+        onClick={() => setDropdownOpen((prevDropdownOpen) => !prevDropdownOpen)}
+        className="inline-flex items-center rounded-lg border border-gray-300 bg-white px-3 py-1.5 text-sm font-medium text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-4 focus:ring-gray-200"
+      >
+        <svg
+          className="mr-2 h-4 w-4 text-gray-400"
+          aria-hidden="true"
+          fill="currentColor"
+          viewBox="0 0 20 20"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            fillRule="evenodd"
+            d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z"
+            clipRule="evenodd"
+          ></path>
+        </svg>
+        Payment Status
+        <svg
+          className="ml-2 h-3 w-3"
+          aria-hidden="true"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth="2"
+            d="M19 9l-7 7-7-7"
+          ></path>
+        </svg>
+      </button>
+      <div
+        className="min-h-96 absolute z-10 w-48 divide-y divide-gray-100 rounded-lg bg-white shadow"
+        style={{
+          display: dropdownOpen ? "block" : "none",
+        }}
+      >
+        <ul
+          className="space-y-1 p-3 text-sm text-gray-700"
+          aria-labelledby="paymentStatusDropdownBtn"
+        >
+          <li>
+            <div
+              className="flex items-center rounded p-2 hover:bg-gray-100"
+              onClick={(e: any) => setPaymentStatusFilter(null)}
+            >
+              <input
+                id="filter-payment-status-0"
+                defaultChecked={true}
+                type="radio"
+                value="Paid"
+                name="filter-payment-status"
+                className="h-4 w-4 border-gray-300 bg-gray-100 text-blue-600 focus:ring-2 focus:ring-blue-500"
+              />
+              <label
+                htmlFor="filter-payment-status-0"
+                className="ml-2 w-full rounded text-sm font-medium text-gray-900"
+              >
+                All
+              </label>
+            </div>
+          </li>
+          <li>
+            <div
+              className="flex items-center rounded p-2 hover:bg-gray-100"
+              onClick={(e: any) => setPaymentStatusFilter("Paid")}
+            >
+              <input
+                id="filter-payment-status-1"
+                defaultChecked={false}
+                type="radio"
+                value="Paid"
+                name="filter-payment-status"
+                className="h-4 w-4 border-gray-300 bg-gray-100 text-blue-600 focus:ring-2 focus:ring-blue-500"
+              />
+              <label
+                htmlFor="filter-payment-status-1"
+                className="ml-2 w-full rounded text-sm font-medium text-gray-900"
+              >
+                Paid
+              </label>
+            </div>
+          </li>
+          <li>
+            <div
+              className="flex items-center rounded p-2 hover:bg-gray-100"
+              onClick={(e: any) => setPaymentStatusFilter("Not Paid")}
+            >
+              <input
+                id="filter-payment-status-2"
+                defaultChecked={false}
+                type="radio"
+                value="Not Paid"
+                name="filter-payment-status"
+                className="h-4 w-4 border-gray-300 bg-gray-100 text-blue-600 focus:ring-2 focus:ring-blue-500"
+              />
+              <label
+                htmlFor="filter-payment-status-2"
+                className="ml-2 w-full rounded text-sm font-medium text-gray-900"
+              >
+                Not Paid
+              </label>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+  );
+};
+
 const Home: NextPage = () => {
   // const hello = api.example.hello.useQuery({ text: "from tRPC" });
-  const [searchQuery, setSearchQuery] = useState("");
   const [filteredTicketsList, setFilteredTicketsList] = useState(ticketsList);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [paymentStatusFilter, setPaymentStatusFilter] = useState("");
 
   const filterTicketsBySearch = (searchQuery: string) => {
     let filteredTicketsList = [...ticketsList];
 
-    filteredTicketsList = filteredTicketsList.filter(
-      (item) =>
-        item.firstName.toLowerCase().indexOf(searchQuery.toLowerCase()) !==
-          -1 ||
-        item.lastName.toLowerCase().indexOf(searchQuery.toLowerCase()) !== -1 ||
-        `${item.firstName} ${item.lastName}`
-          .toLowerCase()
-          .indexOf(searchQuery.toLowerCase()) !== -1 ||
-        item.bookingNum.toString().indexOf(searchQuery) !== -1
-    );
+    if (searchQuery) {
+      filteredTicketsList = filteredTicketsList.filter(
+        (item) =>
+          item.firstName.toLowerCase().indexOf(searchQuery.toLowerCase()) !==
+            -1 ||
+          item.lastName.toLowerCase().indexOf(searchQuery.toLowerCase()) !==
+            -1 ||
+          `${item.firstName} ${item.lastName}`
+            .toLowerCase()
+            .indexOf(searchQuery.toLowerCase()) !== -1 ||
+          item.bookingNum.toString().indexOf(searchQuery) !== -1
+      );
+    }
+
+    setFilteredTicketsList(filteredTicketsList);
+  };
+
+  const filterTicketsByPaymentStatus = (paymentStatusFilter: string) => {
+    let filteredTicketsList = [...ticketsList];
+
+    if (paymentStatusFilter) {
+      filteredTicketsList = filteredTicketsList.filter(
+        (item) => item.paymentStatus === paymentStatusFilter
+      );
+    }
 
     setFilteredTicketsList(filteredTicketsList);
   };
@@ -82,159 +241,28 @@ const Home: NextPage = () => {
     filterTicketsBySearch(searchQuery);
   }, [searchQuery]);
 
+  useEffect(() => {
+    filterTicketsByPaymentStatus(paymentStatusFilter);
+  }, [paymentStatusFilter]);
+
   return (
     <>
       <Head>
-        <title>Create T3 App</title>
-        <meta name="description" content="Generated by create-t3-app" />
+        <title>Travel Agency</title>
+        <meta name="description" content="Travel Agency" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
+
       <main className="flex min-h-screen flex-col items-center justify-center bg-white">
-        <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
+        <div className="overflow-x-auto shadow-md sm:rounded-lg">
+          {/* Filters Container */}
           <div className="flex items-center justify-between pb-4">
-            <div>
-              <button
-                id="dropdownRadioButton"
-                data-dropdown-toggle="dropdownRadio"
-                className="inline-flex items-center rounded-lg border border-gray-300 bg-white px-3 py-1.5 text-sm font-medium text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-4 focus:ring-gray-200"
-                type="button"
-              >
-                <svg
-                  className="mr-2 h-4 w-4 text-gray-400"
-                  aria-hidden="true"
-                  fill="currentColor"
-                  viewBox="0 0 20 20"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    fillRule="evenodd"
-                    d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z"
-                    clipRule="evenodd"
-                  ></path>
-                </svg>
-                Last 30 days
-                <svg
-                  className="ml-2 h-3 w-3"
-                  aria-hidden="true"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth="2"
-                    d="M19 9l-7 7-7-7"
-                  ></path>
-                </svg>
-              </button>
-              <div
-                id="dropdownRadio"
-                className="z-10 hidden w-48 divide-y divide-gray-100 rounded-lg bg-white shadow"
-                data-popper-reference-hidden=""
-                data-popper-escaped=""
-                data-popper-placement="top"
-                style={{
-                  position: "absolute",
-                  inset: "auto auto 0px 0px",
-                  margin: "0px",
-                  transform: "translate3d(522.5px, 3847.5px, 0px)",
-                }}
-              >
-                <ul
-                  className="space-y-1 p-3 text-sm text-gray-700"
-                  aria-labelledby="dropdownRadioButton"
-                >
-                  <li>
-                    <div className="flex items-center rounded p-2 hover:bg-gray-100">
-                      <input
-                        id="filter-radio-example-1"
-                        type="radio"
-                        value=""
-                        name="filter-radio"
-                        className="h-4 w-4 border-gray-300 bg-gray-100 text-blue-600 focus:ring-2 focus:ring-blue-500"
-                      />
-                      <label
-                        htmlFor="filter-radio-example-1"
-                        className="ml-2 w-full rounded text-sm font-medium text-gray-900"
-                      >
-                        Last day
-                      </label>
-                    </div>
-                  </li>
-                  <li>
-                    <div className="flex items-center rounded p-2 hover:bg-gray-100">
-                      <input
-                        defaultChecked={false}
-                        id="filter-radio-example-2"
-                        type="radio"
-                        value=""
-                        name="filter-radio"
-                        className="h-4 w-4 border-gray-300 bg-gray-100 text-blue-600 focus:ring-2 focus:ring-blue-500"
-                      />
-                      <label
-                        htmlFor="filter-radio-example-2"
-                        className="ml-2 w-full rounded text-sm font-medium text-gray-900"
-                      >
-                        Last 7 days
-                      </label>
-                    </div>
-                  </li>
-                  <li>
-                    <div className="flex items-center rounded p-2 hover:bg-gray-100">
-                      <input
-                        id="filter-radio-example-3"
-                        type="radio"
-                        value=""
-                        name="filter-radio"
-                        className="h-4 w-4 border-gray-300 bg-gray-100 text-blue-600 focus:ring-2 focus:ring-blue-500"
-                      />
-                      <label
-                        htmlFor="filter-radio-example-3"
-                        className="ml-2 w-full rounded text-sm font-medium text-gray-900"
-                      >
-                        Last 30 days
-                      </label>
-                    </div>
-                  </li>
-                  <li>
-                    <div className="flex items-center rounded p-2 hover:bg-gray-100">
-                      <input
-                        id="filter-radio-example-4"
-                        type="radio"
-                        value=""
-                        name="filter-radio"
-                        className="h-4 w-4 border-gray-300 bg-gray-100 text-blue-600 focus:ring-2 focus:ring-blue-500"
-                      />
-                      <label
-                        htmlFor="filter-radio-example-4"
-                        className="ml-2 w-full rounded text-sm font-medium text-gray-900"
-                      >
-                        Last month
-                      </label>
-                    </div>
-                  </li>
-                  <li>
-                    <div className="flex items-center rounded p-2 hover:bg-gray-100">
-                      <input
-                        id="filter-radio-example-5"
-                        type="radio"
-                        value=""
-                        name="filter-radio"
-                        className="h-4 w-4 border-gray-300 bg-gray-100 text-blue-600 focus:ring-2 focus:ring-blue-500"
-                      />
-                      <label
-                        htmlFor="filter-radio-example-5"
-                        className="ml-2 w-full rounded text-sm font-medium text-gray-900"
-                      >
-                        Last year
-                      </label>
-                    </div>
-                  </li>
-                </ul>
-              </div>
-            </div>
+            {/* Payment Status Filter */}
+            <PaymentStatusDropdown
+              setPaymentStatusFilter={setPaymentStatusFilter}
+            />
+
+            {/* Search Filter */}
             <label htmlFor="table-search" className="sr-only">
               Search
             </label>
@@ -266,6 +294,8 @@ const Home: NextPage = () => {
               />
             </div>
           </div>
+
+          {/* Tickets Table */}
           <table className="w-full text-left text-sm text-gray-500">
             <thead className="bg-gray-50 text-xs uppercase text-gray-700">
               <tr>
