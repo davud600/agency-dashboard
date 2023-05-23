@@ -3,28 +3,50 @@ import Head from "next/head";
 import { signIn, signOut, useSession } from "next-auth/react";
 
 import { api } from "~/utils/api";
-import { ChangeEvent, useState } from "react";
+import { ChangeEvent, useEffect, useState } from "react";
 
-const ticketsList = [
+type TicketStatus = "Not Paid" | "Paid";
+
+interface Ticket {
+  bookingNum: number;
+  firstName: string;
+  lastName: string;
+  email: string;
+  phoneNumber: string;
+  status: TicketStatus;
+  price: number;
+}
+
+const ticketsList: Ticket[] = [
   {
-    bookingNum: 1,
+    bookingNum: 105,
     firstName: "filon",
     lastName: "fisteku",
+    email: "filoni@example.com",
+    phoneNumber: "049 419 902",
+    status: "Not Paid",
+    price: 200,
   },
 ];
 
-const TicketsList: any = () => {
-  return ticketsList.map((ticket: any) => (
+interface TicketsListProps {
+  filteredTicketsList: any[];
+}
+
+const TicketsList: any = ({ filteredTicketsList }: TicketsListProps) => {
+  return filteredTicketsList.map((ticket: any) => (
     <tr key={ticket.bookingNum} className="border-b bg-white hover:bg-gray-50">
-      <th
+      <th className="px-6 py-4">{ticket.bookingNum}</th>
+      <td
         scope="row"
         className="whitespace-nowrap px-6 py-4 font-medium text-gray-900"
       >
         {ticket.firstName} {ticket.lastName}
-      </th>
-      <td className="px-6 py-4">Silver</td>
-      <td className="px-6 py-4">Laptop</td>
-      <td className="px-6 py-4">$2999</td>
+      </td>
+      <td className="px-6 py-4">{ticket.email}</td>
+      <td className="px-6 py-4">{ticket.phoneNumber}</td>
+      <td className="px-6 py-4">{ticket.price}€</td>
+      <td className="px-6 py-4">{ticket.status}</td>
       <td className="px-6 py-4">
         <a href="#" className="font-medium text-blue-600 hover:underline">
           Edit
@@ -35,8 +57,30 @@ const TicketsList: any = () => {
 };
 
 const Home: NextPage = () => {
-  const hello = api.example.hello.useQuery({ text: "from tRPC" });
+  // const hello = api.example.hello.useQuery({ text: "from tRPC" });
   const [searchQuery, setSearchQuery] = useState("");
+  const [filteredTicketsList, setFilteredTicketsList] = useState(ticketsList);
+
+  const filterTicketsBySearch = (searchQuery: string) => {
+    let filteredTicketsList = [...ticketsList];
+
+    filteredTicketsList = filteredTicketsList.filter(
+      (item) =>
+        item.firstName.toLowerCase().indexOf(searchQuery.toLowerCase()) !==
+          -1 ||
+        item.lastName.toLowerCase().indexOf(searchQuery.toLowerCase()) !== -1 ||
+        `${item.firstName} ${item.lastName}`
+          .toLowerCase()
+          .indexOf(searchQuery.toLowerCase()) !== -1 ||
+        item.bookingNum.toString().indexOf(searchQuery) !== -1
+    );
+
+    setFilteredTicketsList(filteredTicketsList);
+  };
+
+  useEffect(() => {
+    filterTicketsBySearch(searchQuery);
+  }, [searchQuery]);
 
   return (
     <>
@@ -226,16 +270,22 @@ const Home: NextPage = () => {
             <thead className="bg-gray-50 text-xs uppercase text-gray-700">
               <tr>
                 <th scope="col" className="px-6 py-3">
-                  Product name
+                  Booking Number
                 </th>
                 <th scope="col" className="px-6 py-3">
-                  Color
+                  Full Name
                 </th>
                 <th scope="col" className="px-6 py-3">
-                  Category
+                  E-Mail
+                </th>
+                <th scope="col" className="px-6 py-3">
+                  Phone Number
                 </th>
                 <th scope="col" className="px-6 py-3">
                   Price
+                </th>
+                <th scope="col" className="px-6 py-3">
+                  Status
                 </th>
                 <th scope="col" className="px-6 py-3">
                   Action
@@ -243,7 +293,7 @@ const Home: NextPage = () => {
               </tr>
             </thead>
             <tbody>
-              <TicketsList />
+              <TicketsList filteredTicketsList={filteredTicketsList} />
             </tbody>
           </table>
         </div>
@@ -254,26 +304,26 @@ const Home: NextPage = () => {
 
 export default Home;
 
-const AuthShowcase: React.FC = () => {
-  const { data: sessionData } = useSession();
+// const AuthShowcase: React.FC = () => {
+//   const { data: sessionData } = useSession();
 
-  const { data: secretMessage } = api.example.getSecretMessage.useQuery(
-    undefined, // no input
-    { enabled: sessionData?.user !== undefined }
-  );
+//   const { data: secretMessage } = api.example.getSecretMessage.useQuery(
+//     undefined, // no input
+//     { enabled: sessionData?.user !== undefined }
+//   );
 
-  return (
-    <div className="flex flex-col items-center justify-center gap-4">
-      <p className="text-center text-2xl text-white">
-        {sessionData && <span>Logged in as {sessionData.user?.name}</span>}
-        {secretMessage && <span> - {secretMessage}</span>}
-      </p>
-      <button
-        className="rounded-full bg-white/10 px-10 py-3 font-semibold text-white no-underline transition hover:bg-white/20"
-        onClick={sessionData ? () => void signOut() : () => void signIn()}
-      >
-        {sessionData ? "Sign out" : "Sign in"}
-      </button>
-    </div>
-  );
-};
+//   return (
+//     <div className="flex flex-col items-center justify-center gap-4">
+//       <p className="text-center text-2xl text-white">
+//         {sessionData && <span>Logged in as {sessionData.user?.name}</span>}
+//         {secretMessage && <span> - {secretMessage}</span>}
+//       </p>
+//       <button
+//         className="rounded-full bg-white/10 px-10 py-3 font-semibold text-white no-underline transition hover:bg-white/20"
+//         onClick={sessionData ? () => void signOut() : () => void signIn()}
+//       >
+//         {sessionData ? "Sign out" : "Sign in"}
+//       </button>
+//     </div>
+//   );
+// };
