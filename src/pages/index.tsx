@@ -5,6 +5,7 @@ import { useOutsideClickDetector } from "~/utils/outsideClick";
 
 // import { api } from "~/utils/api";
 import { ChangeEvent, RefObject, useEffect, useRef, useState } from "react";
+import { api } from "~/utils/api";
 
 type TicketPaymentStatus = "Not Paid" | "Paid";
 
@@ -253,6 +254,10 @@ const PaymentStatusDropdown: any = ({
 
 const Home: NextPage = () => {
   // const hello = api.example.hello.useQuery({ text: "from tRPC" });
+  const data = api.tickets.getAll.useQuery();
+
+  console.log({ data });
+
   const [filteredTicketsList, setFilteredTicketsList] = useState(ticketsList);
   const [searchQuery, setSearchQuery] = useState("");
   const [paymentStatusFilter, setPaymentStatusFilter] = useState("");
@@ -300,8 +305,8 @@ const Home: NextPage = () => {
   return (
     <>
       <Head>
-        <title>Travel Agency</title>
-        <meta name="description" content="Travel Agency" />
+        <title>Agency Dashboard</title>
+        <meta name="description" content="Agency dashboard" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
@@ -385,27 +390,3 @@ const Home: NextPage = () => {
 };
 
 export default Home;
-
-// const AuthShowcase: React.FC = () => {
-//   const { data: sessionData } = useSession();
-
-//   const { data: secretMessage } = api.example.getSecretMessage.useQuery(
-//     undefined, // no input
-//     { enabled: sessionData?.user !== undefined }
-//   );
-
-//   return (
-//     <div className="flex flex-col items-center justify-center gap-4">
-//       <p className="text-center text-2xl text-white">
-//         {sessionData && <span>Logged in as {sessionData.user?.name}</span>}
-//         {secretMessage && <span> - {secretMessage}</span>}
-//       </p>
-//       <button
-//         className="rounded-full bg-white/10 px-10 py-3 font-semibold text-white no-underline transition hover:bg-white/20"
-//         onClick={sessionData ? () => void signOut() : () => void signIn()}
-//       >
-//         {sessionData ? "Sign out" : "Sign in"}
-//       </button>
-//     </div>
-//   );
-// };
