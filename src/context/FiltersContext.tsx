@@ -7,6 +7,7 @@ import {
   type SetStateAction,
   useEffect,
 } from "react";
+import { Ticket } from "~/interfaces/ticket";
 import { useTickets } from "./TicketsContext";
 
 /**
@@ -48,12 +49,12 @@ export const usePaymentStatusFilter = () => {
  * Context Provider
  */
 const FiltersProvider = ({ children }: { children: ReactNode }) => {
-  const { ticketsList, filteredTickets, setFilteredTicketsList } = useTickets();
+  const { ticketsList, setFilteredTicketsList } = useTickets();
 
   const [searchQuery, setSearchQuery] = useState("");
   const [paymentStatus, setPaymentStatus] = useState("");
 
-  const filterTicketsBySearch = (searchQuery: string) => {
+  const getFilteredTicketsBySearch = (ticketsList: Ticket[]) => {
     let filteredTicketsList = [...ticketsList];
 
     if (searchQuery) {
@@ -70,28 +71,30 @@ const FiltersProvider = ({ children }: { children: ReactNode }) => {
       );
     }
 
-    setFilteredTicketsList(filteredTicketsList);
+    return filteredTicketsList;
   };
 
-  const filterTicketsByPaymentStatus = (paymentStatusFilter: string) => {
+  const getFilteredTicketsByPaymentStatus = (ticketsList: Ticket[]) => {
     let filteredTicketsList = [...ticketsList];
 
-    if (paymentStatusFilter) {
+    if (paymentStatus) {
       filteredTicketsList = filteredTicketsList.filter(
-        (item) => item.paymentStatus === paymentStatusFilter
+        (item) => item.paymentStatus === paymentStatus
       );
     }
 
-    setFilteredTicketsList(filteredTicketsList);
+    return filteredTicketsList;
+  };
+
+  const filterTickets = () => {
+    setFilteredTicketsList(
+      getFilteredTicketsByPaymentStatus(getFilteredTicketsBySearch(ticketsList))
+    );
   };
 
   useEffect(() => {
-    filterTicketsBySearch(searchQuery);
-  }, [searchQuery]);
-
-  useEffect(() => {
-    filterTicketsByPaymentStatus(paymentStatus);
-  }, [paymentStatus]);
+    filterTickets();
+  }, [searchQuery, paymentStatus]);
 
   const searchFilterContextValue = {
     searchQuery,
