@@ -77,8 +77,6 @@ const TicketsProvider = ({ children }: { children: ReactNode }) => {
     ...ticketsList,
   ]);
 
-  console.log({ filteredTickets, ticketsList });
-
   const value = {
     ticketsList,
     filteredTickets,

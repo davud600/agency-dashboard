@@ -73,4 +73,6 @@ model Ticket {
     phoneNumber String
     price Float
     paymentStatus String
+    amadeusCode String
+    pdfFilePath String
 }

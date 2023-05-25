@@ -1,10 +1,4 @@
-import {
-  type ChangeEvent,
-  RefObject,
-  useRef,
-  useState,
-  ReactNode,
-} from "react";
+import { type ChangeEvent, useRef, useState } from "react";
 import {
   usePaymentStatusFilter,
   useSearchFilter,
@@ -15,7 +9,7 @@ const PaymentStatusDropdown = () => {
   const { setPaymentStatus } = usePaymentStatusFilter();
 
   const [dropdownOpen, setDropdownOpen] = useState<boolean>(false);
-  const dropdownRef: RefObject<HTMLDivElement> | null = useRef(null);
+  const dropdownRef = useRef<HTMLDivElement>(null);
 
   useOutsideClickDetector(dropdownRef, () => setDropdownOpen(false));
 
