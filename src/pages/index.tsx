@@ -30,22 +30,40 @@ const ticketsList: Ticket[] = [
     price: 200,
   },
   {
-    bookingNum: 15,
-    firstName: "filonii",
-    lastName: "fistekuueuye",
-    email: "filoni@example.com",
-    phoneNumber: "049 109 502",
+    bookingNum: 63,
+    firstName: "Drin",
+    lastName: "Marevci",
+    email: "drinmarevci@example.com",
+    phoneNumber: "044 999 302",
     paymentStatus: "Paid",
-    price: 198.65,
+    price: 374.99,
   },
   {
-    bookingNum: 62,
-    firstName: "filonsoif",
-    lastName: "papapa",
-    email: "filonisdf@example.com",
+    bookingNum: 64,
+    firstName: "Sinjorita",
+    lastName: "Bllaca",
+    email: "sinjokiss@example.com",
+    phoneNumber: "045 520 013",
+    paymentStatus: "Paid",
+    price: 95.99,
+  },
+  {
+    bookingNum: 65,
+    firstName: "test",
+    lastName: "testimi",
+    email: "testim@example.com",
     phoneNumber: "045 520 013",
     paymentStatus: "Not Paid",
-    price: 374.99,
+    price: 340.99,
+  },
+  {
+    bookingNum: 66,
+    firstName: "Arjani",
+    lastName: "Idajve",
+    email: "lopa@example.com",
+    phoneNumber: "045 520 013",
+    paymentStatus: "Not Paid",
+    price: 3.2,
   },
 ];
 
@@ -147,7 +165,7 @@ const PaymentStatusDropdown: any = ({
             clipRule="evenodd"
           ></path>
         </svg>
-        Payment Status
+          Find
         <svg
           className="ml-2 h-3 w-3"
           aria-hidden="true"
@@ -310,7 +328,7 @@ const Home: NextPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <main className="flex min-h-screen flex-col items-center justify-center bg-white">
+      <main className="flex min-h-screen flex-col items-center justify-center bg-[#6200EE]">
         <div className="overflow-x-auto shadow-md sm:rounded-lg">
           {/* Filters Container */}
           <div className="flex items-center justify-between pb-4">
