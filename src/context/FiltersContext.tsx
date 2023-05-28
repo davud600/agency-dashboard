@@ -7,7 +7,7 @@ import {
   type SetStateAction,
   useEffect,
 } from "react";
-import { Ticket } from "~/interfaces/ticket";
+import { type Ticket } from "~/interfaces/ticket";
 import { useTickets } from "./TicketsContext";
 
 /**
@@ -86,15 +86,17 @@ const FiltersProvider = ({ children }: { children: ReactNode }) => {
     return filteredTicketsList;
   };
 
-  const filterTickets = () => {
+  const filterTickets = (ticketsList: Ticket[]) => {
     setFilteredTicketsList(
       getFilteredTicketsByPaymentStatus(getFilteredTicketsBySearch(ticketsList))
     );
   };
 
   useEffect(() => {
-    filterTickets();
-  }, [searchQuery, paymentStatus]);
+    if (!!!ticketsList) return;
+
+    filterTickets(ticketsList);
+  }, [searchQuery, paymentStatus, ticketsList]);
 
   const searchFilterContextValue = {
     searchQuery,

@@ -15,9 +15,6 @@ const TicketsTable = () => {
             Full Name
           </th>
           <th scope="col" className="px-6 py-3">
-            E-Mail
-          </th>
-          <th scope="col" className="px-6 py-3">
             Phone Number
           </th>
           <th scope="col" className="px-6 py-3">

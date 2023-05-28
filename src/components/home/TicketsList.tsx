@@ -1,10 +1,12 @@
-import { Ticket } from "~/interfaces/ticket";
+import { type Ticket } from "~/interfaces/ticket";
 
 export interface TicketsListProps {
   filteredTickets: Ticket[];
 }
 
-export const TicketsList: any = ({ filteredTickets }: TicketsListProps) => {
+export const TicketsList = ({ filteredTickets }: TicketsListProps) => {
+  if (!!!filteredTickets) return <></>;
+
   return filteredTickets.map((ticket: Ticket) => (
     <tr key={ticket.bookingNum} className="border-b bg-white hover:bg-gray-50">
       <th className="px-6 py-4">{ticket.bookingNum}</th>
@@ -14,7 +16,6 @@ export const TicketsList: any = ({ filteredTickets }: TicketsListProps) => {
       >
         {ticket.firstName} {ticket.lastName}
       </td>
-      <td className="px-6 py-4">{ticket.email}</td>
       <td className="px-6 py-4">{ticket.phoneNumber}</td>
       <td className="px-6 py-4">{ticket.price}€</td>
       <td

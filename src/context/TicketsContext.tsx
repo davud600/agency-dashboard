@@ -3,21 +3,29 @@ import {
   createContext,
   type ReactNode,
   useState,
-  SetStateAction,
-  Dispatch,
+  type SetStateAction,
+  type Dispatch,
+  useEffect,
 } from "react";
-import { Ticket } from "~/interfaces/ticket";
+import { type DbTicket, type Ticket } from "~/interfaces/ticket";
+import { api } from "~/utils/api";
 
 interface TicketsContextType {
   ticketsList: Ticket[];
   filteredTickets: Ticket[];
   setFilteredTicketsList: Dispatch<SetStateAction<Ticket[]>>;
+  createTicket: (ticketData: Ticket) => void;
+  updateTicket: (ticketData: Ticket) => void;
+  deleteTicket: (ticketData: Ticket) => void;
 }
 
 export const TicketsContext = createContext<TicketsContextType>({
   ticketsList: [],
   filteredTickets: [],
   setFilteredTicketsList: () => false,
+  createTicket: () => false,
+  updateTicket: () => false,
+  deleteTicket: () => false,
 });
 
 export const useTickets = () => {
@@ -25,62 +33,60 @@ export const useTickets = () => {
 };
 
 const TicketsProvider = ({ children }: { children: ReactNode }) => {
-  const ticketsList: Ticket[] = [
-    {
-      bookingNum: 105,
-      firstName: "filon",
-      lastName: "fisteku",
-      email: "filoni@example.com",
-      phoneNumber: "049 419 902",
-      paymentStatus: "Not Paid",
-      price: 200,
-    },
-    {
-      bookingNum: 63,
-      firstName: "Drin",
-      lastName: "Marevci",
-      email: "drinmarevci@example.com",
-      phoneNumber: "044 999 302",
-      paymentStatus: "Paid",
-      price: 374.99,
-    },
-    {
-      bookingNum: 64,
-      firstName: "Sinjorita",
-      lastName: "Bllaca",
-      email: "sinjokiss@example.com",
-      phoneNumber: "045 520 013",
-      paymentStatus: "Paid",
-      price: 95.99,
-    },
-    {
-      bookingNum: 65,
-      firstName: "test",
-      lastName: "testimi",
-      email: "testim@example.com",
-      phoneNumber: "045 520 013",
-      paymentStatus: "Not Paid",
-      price: 340.99,
-    },
-    {
-      bookingNum: 66,
-      firstName: "Arjani",
-      lastName: "Idajve",
-      email: "lopa@example.com",
-      phoneNumber: "045 520 013",
-      paymentStatus: "Not Paid",
-      price: 3.2,
-    },
-  ];
+  const [ticketsList, setTicketsList] = useState<DbTicket[]>([]);
 
-  const [filteredTickets, setFilteredTicketsList] = useState<Ticket[]>([
-    ...ticketsList,
-  ]);
+  const [filteredTickets, setFilteredTicketsList] = useState<Ticket[]>(
+    ticketsList as Ticket[]
+  );
+
+  console.log({ filteredTickets });
+
+  const ticketsQueryData = api.tickets.getAll.useQuery();
+
+  const ticketsCreateMutation = api.tickets.create.useMutation({
+    onSuccess: async () => {
+      await ticketsQueryData.refetch();
+      setFilteredTicketsList(ticketsList);
+    },
+  });
+
+  const ticketsUpdateMutation = api.tickets.update.useMutation({
+    onSuccess: async () => {
+      await ticketsQueryData.refetch();
+    },
+  });
+
+  const ticketsDeleteMutation = api.tickets.delete.useMutation({
+    onSuccess: async () => {
+      await ticketsQueryData.refetch();
+    },
+  });
+
+  useEffect(() => {
+    const tickets: unknown = ticketsQueryData.data;
+
+    setTicketsList(tickets as DbTicket[]);
+  }, [ticketsQueryData]);
+
+  const createTicket = (ticketData: Ticket) => {
+    ticketsCreateMutation.mutate(ticketData);
+  };
+
+  const updateTicket = (ticketData: Ticket) => {
+    ticketsUpdateMutation.mutate(ticketData);
+  };
+
+  const deleteTicket = (ticketData: Ticket) => {
+    ticketsDeleteMutation.mutate(ticketData);
+  };
 
   const value = {
     ticketsList,
     filteredTickets,
     setFilteredTicketsList,
+    createTicket,
+    updateTicket,
+    deleteTicket,
   };
 
   return (

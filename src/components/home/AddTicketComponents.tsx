@@ -1,4 +1,13 @@
-import { type Dispatch, type SetStateAction, useRef, useState } from "react";
+import {
+  type Dispatch,
+  type SetStateAction,
+  useRef,
+  useState,
+  type FormEvent,
+  type ChangeEvent,
+} from "react";
+import { useTickets } from "~/context/TicketsContext";
+import { TicketPaymentStatus, type Ticket } from "~/interfaces/ticket";
 import { useOutsideClickDetector } from "~/utils/outsideClick";
 
 interface AddTicketPortalProps {
@@ -6,9 +15,30 @@ interface AddTicketPortalProps {
 }
 
 const AddTicketPortal = ({ closePortal }: AddTicketPortalProps) => {
+  const { createTicket } = useTickets();
+
+  // Input state
+  const [formData, setFormData] = useState<Ticket>({
+    bookingNum: 0,
+    firstName: "",
+    lastName: "",
+    phoneNumber: "",
+    price: 0,
+    paymentStatus: "Not Paid",
+    amadeusCode: "",
+    pdfFilePath: "",
+  });
+
   const portalRef = useRef<HTMLDivElement>(null);
 
   useOutsideClickDetector(portalRef, closePortal);
+
+  const submitHandler = (e: FormEvent) => {
+    e.preventDefault();
+
+    createTicket(formData);
+    closePortal(undefined);
+  };
 
   return (
     <div
@@ -32,10 +62,13 @@ const AddTicketPortal = ({ closePortal }: AddTicketPortalProps) => {
       <div className="pointer-events-none -mt-6 mb-6 flex w-full items-center justify-center">
         <h1 className="text-lg font-medium text-gray-500">Add Ticket</h1>
       </div>
-      <form className="flex h-full w-full flex-col justify-between">
+      <form
+        onSubmit={submitHandler}
+        className="flex h-full w-full flex-col justify-between"
+      >
         <div className="w-full">
           <div className="mb-3 flex w-full justify-start gap-2">
-            <div className="w-1/3">
+            <div className="w-1/2">
               <label
                 htmlFor="bookingNum"
                 className="mb-2 block text-sm font-medium text-gray-600"
@@ -48,9 +81,18 @@ const AddTicketPortal = ({ closePortal }: AddTicketPortalProps) => {
                 className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-600 focus:border-blue-500 focus:ring-blue-500"
                 placeholder="12345678"
                 required
+                value={formData.bookingNum}
+                onChange={(e: ChangeEvent<HTMLInputElement>) =>
+                  setFormData((prevFormData) => {
+                    return {
+                      ...prevFormData,
+                      bookingNum: parseFloat(e.target.value),
+                    };
+                  })
+                }
               />
             </div>
-            <div className="w-1/3">
+            <div className="w-1/2">
               <label
                 htmlFor="paymentStatus"
                 className="mb-2 block text-sm font-medium text-gray-900"
@@ -60,11 +102,17 @@ const AddTicketPortal = ({ closePortal }: AddTicketPortalProps) => {
               <select
                 id="paymentStatus"
                 className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-600 focus:border-blue-500 focus:ring-blue-500"
+                onChange={(e) => {
+                  setFormData((prevFormData) => {
+                    return { ...prevFormData, paymentStatus: e.target.value as TicketPaymentStatus };
+                  });
+                }}
               >
-                <option className="text-gray-600" value="Not Paid">
-                  Payment Status
-                </option>
-                <option className="text-gray-600" value="Not Paid">
+                <option
+                  defaultChecked={true}
+                  className="text-gray-600"
+                  value="Not Paid"
+                >
                   Not Paid
                 </option>
                 <option className="text-gray-600" value="Paid">
@@ -86,6 +134,16 @@ const AddTicketPortal = ({ closePortal }: AddTicketPortalProps) => {
                 id="firstName"
                 className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500"
                 placeholder="Filan"
+                required
+                value={formData.firstName}
+                onChange={(e: ChangeEvent<HTMLInputElement>) =>
+                  setFormData((prevFormData) => {
+                    return {
+                      ...prevFormData,
+                      firstName: e.target.value,
+                    };
+                  })
+                }
               />
             </div>
             <div className="w-1/2">
@@ -100,26 +158,45 @@ const AddTicketPortal = ({ closePortal }: AddTicketPortalProps) => {
                 id="lastName"
                 className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500"
                 placeholder="Fisteku"
+                required
+                value={formData.lastName}
+                onChange={(e: ChangeEvent<HTMLInputElement>) =>
+                  setFormData((prevFormData) => {
+                    return {
+                      ...prevFormData,
+                      lastName: e.target.value,
+                    };
+                  })
+                }
               />
             </div>
           </div>
           <div className="mb-3 flex w-full justify-center gap-2">
-            <div className="w-2/3">
+            <div className="w-1/2">
               <label
-                htmlFor="email"
+                htmlFor="price"
                 className="mb-2 block text-sm font-medium text-gray-600"
               >
-                Client Email
+                Ticket Price
               </label>
               <input
-                type="email"
-                id="email"
+                type="number"
+                id="price"
                 className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500"
-                placeholder="example@gmail.com"
+                placeholder="0.99€"
                 required
+                value={formData.price}
+                onChange={(e: ChangeEvent<HTMLInputElement>) =>
+                  setFormData((prevFormData) => {
+                    return {
+                      ...prevFormData,
+                      price: parseFloat(e.target.value),
+                    };
+                  })
+                }
               />
             </div>
-            <div className="w-1/3">
+            <div className="w-1/2">
               <label
                 htmlFor="phoneNumber"
                 className="mb-2 block text-sm font-medium text-gray-600"
@@ -132,6 +209,15 @@ const AddTicketPortal = ({ closePortal }: AddTicketPortalProps) => {
                 className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500"
                 placeholder="049 665 876"
                 required
+                value={formData.phoneNumber}
+                onChange={(e: ChangeEvent<HTMLInputElement>) =>
+                  setFormData((prevFormData) => {
+                    return {
+                      ...prevFormData,
+                      phoneNumber: e.target.value,
+                    };
+                  })
+                }
               />
             </div>
           </div>
@@ -146,6 +232,15 @@ const AddTicketPortal = ({ closePortal }: AddTicketPortalProps) => {
               id="amadeusCode"
               className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500"
               required
+              value={formData.amadeusCode}
+              onChange={(e: ChangeEvent<HTMLTextAreaElement>) =>
+                setFormData((prevFormData) => {
+                  return {
+                    ...prevFormData,
+                    amadeusCode: e.target.value,
+                  };
+                })
+              }
             />
           </div>
           <div className="mb-3">

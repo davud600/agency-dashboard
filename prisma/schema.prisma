@@ -69,10 +69,11 @@ model Ticket {
     bookingNum Int @unique
     firstName String
     lastName String
-    email String?
     phoneNumber String
     price Float
     paymentStatus String
     amadeusCode String
-    pdfFilePath String
+    pdfFilePath String?
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
 }
