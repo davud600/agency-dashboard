@@ -6,7 +6,7 @@ import {
 import { useOutsideClickDetector } from "~/utils/outsideClick";
 
 const PaymentStatusDropdown = () => {
-  const { setPaymentStatus } = usePaymentStatusFilter();
+  const { paymentStatus, setPaymentStatus } = usePaymentStatusFilter();
 
   const [dropdownOpen, setDropdownOpen] = useState<boolean>(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
@@ -70,7 +70,7 @@ const PaymentStatusDropdown = () => {
             >
               <input
                 id="filter-payment-status-0"
-                defaultChecked={true}
+                defaultChecked={paymentStatus === ""}
                 type="radio"
                 value="Paid"
                 name="filter-payment-status"
@@ -94,7 +94,7 @@ const PaymentStatusDropdown = () => {
             >
               <input
                 id="filter-payment-status-1"
-                defaultChecked={false}
+                defaultChecked={paymentStatus === "Paid"}
                 type="radio"
                 value="Paid"
                 name="filter-payment-status"
@@ -118,7 +118,7 @@ const PaymentStatusDropdown = () => {
             >
               <input
                 id="filter-payment-status-2"
-                defaultChecked={false}
+                defaultChecked={paymentStatus === "Not Paid"}
                 type="radio"
                 value="Not Paid"
                 name="filter-payment-status"
