@@ -24,19 +24,19 @@ export const ticketRouter = createTRPCRouter({
     }),
 
   update: publicProcedure
-    .input(TicketObject)
-    .mutation(async ({ input, ctx }) => {
+    .input(z.object({ ticketToUpdate: TicketObject, ticketData: TicketObject }))
+    .mutation(async ({ input: { ticketToUpdate, ticketData }, ctx }) => {
       await ctx.prisma.ticket.update({
-        where: { bookingNum: input.bookingNum },
-        data: input,
+        where: { bookingNum: ticketToUpdate.bookingNum },
+        data: ticketData,
       });
     }),
 
   delete: publicProcedure
-    .input(TicketObject)
-    .mutation(async ({ input, ctx }) => {
+    .input(z.object({ ticketToDelete: TicketObject }))
+    .mutation(async ({ input: { ticketToDelete }, ctx }) => {
       await ctx.prisma.ticket.delete({
-        where: { bookingNum: input.bookingNum },
+        where: { bookingNum: ticketToDelete.bookingNum },
       });
     }),
 });

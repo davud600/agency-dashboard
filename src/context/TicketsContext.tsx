@@ -15,8 +15,8 @@ interface TicketsContextType {
   filteredTickets: Ticket[];
   setFilteredTicketsList: Dispatch<SetStateAction<Ticket[]>>;
   createTicket: (ticketData: Ticket) => void;
-  updateTicket: (ticketData: Ticket) => void;
-  deleteTicket: (ticketData: Ticket) => void;
+  updateTicket: (ticketToUpdate: Ticket, ticketData: Ticket) => void;
+  deleteTicket: (ticketToDelete: Ticket) => void;
 }
 
 export const TicketsContext = createContext<TicketsContextType>({
@@ -38,8 +38,6 @@ const TicketsProvider = ({ children }: { children: ReactNode }) => {
   const [filteredTickets, setFilteredTicketsList] = useState<Ticket[]>(
     ticketsList as Ticket[]
   );
-
-  console.log({ filteredTickets });
 
   const ticketsQueryData = api.tickets.getAll.useQuery();
 
@@ -72,12 +70,12 @@ const TicketsProvider = ({ children }: { children: ReactNode }) => {
     ticketsCreateMutation.mutate(ticketData);
   };
 
-  const updateTicket = (ticketData: Ticket) => {
-    ticketsUpdateMutation.mutate(ticketData);
+  const updateTicket = (ticketToUpdate: Ticket, ticketData: Ticket) => {
+    ticketsUpdateMutation.mutate({ ticketToUpdate, ticketData });
   };
 
-  const deleteTicket = (ticketData: Ticket) => {
-    ticketsDeleteMutation.mutate(ticketData);
+  const deleteTicket = (ticketToDelete: Ticket) => {
+    ticketsDeleteMutation.mutate({ ticketToDelete });
   };
 
   const value = {

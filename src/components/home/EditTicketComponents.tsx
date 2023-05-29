@@ -10,23 +10,25 @@ import { useTickets } from "~/context/TicketsContext";
 import { type TicketPaymentStatus, type Ticket } from "~/interfaces/ticket";
 import { useOutsideClickDetector } from "~/utils/outsideClick";
 
-interface AddTicketPortalProps {
+interface EditTicketPortalProps {
   closePortal: Dispatch<SetStateAction<undefined>>;
+  ticket: Ticket;
 }
 
-const AddTicketPortal = ({ closePortal }: AddTicketPortalProps) => {
-  const { createTicket } = useTickets();
+const EditTicketPortal = ({ closePortal, ticket }: EditTicketPortalProps) => {
+  const { updateTicket } = useTickets();
 
   // Input state
+  //   const [formData, setFormData] = useState<Ticket>({ ...ticket });
   const [formData, setFormData] = useState<Ticket>({
-    bookingNum: 0,
-    firstName: "",
-    lastName: "",
-    phoneNumber: "",
-    price: 0,
-    paymentStatus: "Not Paid",
-    amadeusCode: "",
-    pdfFilePath: "",
+    bookingNum: parseInt(ticket.bookingNum.toString()),
+    firstName: ticket.firstName,
+    lastName: ticket.lastName,
+    phoneNumber: ticket.phoneNumber,
+    price: ticket.price,
+    paymentStatus: ticket.paymentStatus,
+    amadeusCode: ticket.amadeusCode,
+    pdfFilePath: ticket.pdfFilePath,
   });
 
   const portalRef = useRef<HTMLDivElement>(null);
@@ -36,7 +38,13 @@ const AddTicketPortal = ({ closePortal }: AddTicketPortalProps) => {
   const submitHandler = (e: FormEvent) => {
     e.preventDefault();
 
-    createTicket(formData);
+    updateTicket(
+      {
+        ...ticket,
+        bookingNum: parseInt(ticket.bookingNum.toString()),
+      },
+      formData
+    );
     closePortal(undefined);
   };
 
@@ -60,7 +68,9 @@ const AddTicketPortal = ({ closePortal }: AddTicketPortalProps) => {
         </button>
       </div>
       <div className="pointer-events-none -mt-6 mb-6 flex w-full items-center justify-center">
-        <h1 className="text-lg font-medium text-gray-500">Add Ticket</h1>
+        <h1 className="text-lg font-medium text-gray-500">
+          Edit Ticket {ticket.bookingNum.toString()}
+        </h1>
       </div>
       <form
         onSubmit={submitHandler}
@@ -260,28 +270,38 @@ const AddTicketPortal = ({ closePortal }: AddTicketPortalProps) => {
         </div>
         <button
           type="submit"
-          className="w-full rounded-lg bg-green-700 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-green-800 focus:outline-none focus:ring-4 focus:ring-green-300"
+          className="w-full rounded-lg bg-blue-700 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300"
         >
-          Add Ticket
+          Edit Ticket
         </button>
       </form>
     </div>
   );
 };
 
-export const AddTicketBtn = () => {
+export const EditTicketBtn = ({ ticket }: { ticket: Ticket }) => {
   const [portalOpen, setPortalOpen] = useState<boolean>(false);
 
   return (
     <>
       {portalOpen && (
-        <AddTicketPortal closePortal={() => setPortalOpen(false)} />
+        <EditTicketPortal
+          closePortal={() => setPortalOpen(false)}
+          ticket={ticket}
+        />
       )}
+
       <button
         onClick={() => setPortalOpen((prevPortalOpen) => !prevPortalOpen)}
-        className="inline-flex items-center rounded-lg border border-gray-300 bg-white px-3 py-1.5 text-sm font-medium text-gray-500 transition-all hover:border-green-600 hover:bg-green-600 hover:text-white"
+        className="flex items-center justify-center font-medium text-blue-600 hover:underline"
       >
-        Add Ticket +
+        <svg
+          className="h-6 w-6 fill-blue-600 transition-all hover:fill-blue-700"
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 512 512"
+        >
+          <path d="M471.6 21.7c-21.9-21.9-57.3-21.9-79.2 0L362.3 51.7l97.9 97.9 30.1-30.1c21.9-21.9 21.9-57.3 0-79.2L471.6 21.7zm-299.2 220c-6.1 6.1-10.8 13.6-13.5 21.9l-29.6 88.8c-2.9 8.6-.6 18.1 5.8 24.6s15.9 8.7 24.6 5.8l88.8-29.6c8.2-2.7 15.7-7.4 21.9-13.5L437.7 172.3 339.7 74.3 172.4 241.7zM96 64C43 64 0 107 0 160V416c0 53 43 96 96 96H352c53 0 96-43 96-96V320c0-17.7-14.3-32-32-32s-32 14.3-32 32v96c0 17.7-14.3 32-32 32H96c-17.7 0-32-14.3-32-32V160c0-17.7 14.3-32 32-32h96c17.7 0 32-14.3 32-32s-14.3-32-32-32H96z" />
+        </svg>
       </button>
     </>
   );
