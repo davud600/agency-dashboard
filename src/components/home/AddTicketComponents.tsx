@@ -7,7 +7,7 @@ import {
   type ChangeEvent,
 } from "react";
 import { useTickets } from "~/context/TicketsContext";
-import { TicketPaymentStatus, type Ticket } from "~/interfaces/ticket";
+import { type TicketPaymentStatus, type Ticket } from "~/interfaces/ticket";
 import { useOutsideClickDetector } from "~/utils/outsideClick";
 
 interface AddTicketPortalProps {
@@ -80,6 +80,7 @@ const AddTicketPortal = ({ closePortal }: AddTicketPortalProps) => {
                 id="bookingNum"
                 className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-600 focus:border-blue-500 focus:ring-blue-500"
                 placeholder="12345678"
+                min={0}
                 required
                 value={formData.bookingNum}
                 onChange={(e: ChangeEvent<HTMLInputElement>) =>
@@ -104,7 +105,10 @@ const AddTicketPortal = ({ closePortal }: AddTicketPortalProps) => {
                 className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-600 focus:border-blue-500 focus:ring-blue-500"
                 onChange={(e) => {
                   setFormData((prevFormData) => {
-                    return { ...prevFormData, paymentStatus: e.target.value as TicketPaymentStatus };
+                    return {
+                      ...prevFormData,
+                      paymentStatus: e.target.value as TicketPaymentStatus,
+                    };
                   });
                 }}
               >
