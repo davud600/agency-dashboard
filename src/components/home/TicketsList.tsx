@@ -1,4 +1,5 @@
 import { type Ticket } from "~/interfaces/ticket";
+import DeleteTicketBtn from "./DeleteTicketBtn";
 import { EditTicketBtn } from "./EditTicketComponents";
 import SwitchPaymentStatusBtn from "./SwitchPaymentStatusBtn";
 
@@ -16,17 +17,17 @@ export const TicketsList = ({ filteredTickets }: TicketsListProps) => {
           key={ticket.bookingNum}
           className="border-b bg-white hover:bg-gray-50"
         >
-          <th className="px-6 py-4">{ticket.bookingNum.toString()}</th>
+          <th className="p-2">{ticket.bookingNum.toString()}</th>
           <td
             scope="row"
-            className="whitespace-nowrap px-6 py-4 font-medium text-gray-900"
+            className="whitespace-nowrap p-2 font-medium text-gray-900"
           >
             {ticket.firstName} {ticket.lastName}
           </td>
-          <td className="px-6 py-4">{ticket.phoneNumber}</td>
-          <td className="px-6 py-4">{ticket.price}€</td>
+          <td className="p-2">{ticket.phoneNumber}</td>
+          <td className="p-2">{ticket.price}€</td>
           <td
-            className="px-6 py-4"
+            className="p-2"
             style={{
               color: ticket.paymentStatus === "Paid" ? "green" : " ",
               fontWeight: ticket.paymentStatus === "Paid" ? 500 : "normal",
@@ -34,9 +35,10 @@ export const TicketsList = ({ filteredTickets }: TicketsListProps) => {
           >
             {ticket.paymentStatus}
           </td>
-          <td className="flex gap-8 px-6 py-4">
+          <td className="flex gap-2 p-2 md:gap-4">
             <SwitchPaymentStatusBtn ticket={ticket} />
             <EditTicketBtn ticket={ticket} />
+            <DeleteTicketBtn ticket={ticket} />
           </td>
         </tr>
       ))}
