@@ -17,6 +17,7 @@ interface TicketsContextType {
   createTicket: (ticketData: Ticket) => void;
   updateTicket: (ticketToUpdate: Ticket, ticketData: Ticket) => void;
   deleteTicket: (ticketToDelete: Ticket) => void;
+  switchTicketPaymentStatus: (ticketToUpdate: Ticket) => void;
 }
 
 export const TicketsContext = createContext<TicketsContextType>({
@@ -26,6 +27,7 @@ export const TicketsContext = createContext<TicketsContextType>({
   createTicket: () => false,
   updateTicket: () => false,
   deleteTicket: () => false,
+  switchTicketPaymentStatus: () => false,
 });
 
 export const useTickets = () => {
@@ -78,6 +80,17 @@ const TicketsProvider = ({ children }: { children: ReactNode }) => {
     ticketsDeleteMutation.mutate({ ticketToDelete });
   };
 
+  const switchTicketPaymentStatus = (ticketToUpdate: Ticket) => {
+    ticketsUpdateMutation.mutate({
+      ticketToUpdate,
+      ticketData: {
+        ...ticketToUpdate,
+        paymentStatus:
+          ticketToUpdate.paymentStatus === "Not Paid" ? "Paid" : "Not Paid",
+      },
+    });
+  };
+
   const value = {
     ticketsList,
     filteredTickets,
@@ -85,6 +98,7 @@ const TicketsProvider = ({ children }: { children: ReactNode }) => {
     createTicket,
     updateTicket,
     deleteTicket,
+    switchTicketPaymentStatus,
   };
 
   return (

@@ -14,7 +14,9 @@ const TicketObject = z.object({
 
 export const ticketRouter = createTRPCRouter({
   getAll: publicProcedure.query(({ ctx }) => {
-    return ctx.prisma.ticket.findMany();
+    return ctx.prisma.ticket.findMany({
+      orderBy: { createdAt: "desc" },
+    });
   }),
 
   create: publicProcedure
