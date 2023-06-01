@@ -19,7 +19,6 @@ const EditTicketPortal = ({ closePortal, ticket }: EditTicketPortalProps) => {
   const { updateTicket } = useTickets();
 
   // Input state
-  //   const [formData, setFormData] = useState<Ticket>({ ...ticket });
   const [formData, setFormData] = useState<Ticket>({
     bookingNum: parseInt(ticket.bookingNum.toString()),
     firstName: ticket.firstName,

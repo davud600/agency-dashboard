@@ -1,7 +1,7 @@
 import { type Ticket } from "~/interfaces/ticket";
 import { DeleteTicketBtn } from "./DeleteTicketComponents";
 import { EditTicketBtn } from "./EditTicketComponents";
-import SwitchPaymentStatusBtn from "./SwitchPaymentStatusBtn";
+import { SwitchPaymentStatusBtn } from "./SwitchPaymentStatusComponents";
 
 export interface TicketsListProps {
   filteredTickets: Ticket[];
@@ -33,7 +33,12 @@ export const TicketsList = ({ filteredTickets }: TicketsListProps) => {
               fontWeight: ticket.paymentStatus === "Paid" ? 500 : "normal",
             }}
           >
-            {ticket.paymentStatus}
+            {ticket.paymentStatus}{" "}
+            {!!ticket.paymentMemo && (
+              <span className="text-sm text-gray-800">
+                ({ticket.paymentMemo})
+              </span>
+            )}
           </td>
           <td className="flex gap-2 p-2 md:gap-4">
             <SwitchPaymentStatusBtn ticket={ticket} />
