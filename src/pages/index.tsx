@@ -13,13 +13,8 @@ const Home: NextPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <main className="flex min-h-screen flex-col items-center justify-center bg-[#6200EE] p-1 md:p-4">
-        <div className="min-h-screen w-full overflow-x-auto border border-neutral-600 bg-white p-1 shadow-md sm:rounded-lg md:p-3">
-          {/* Add new Ticket button */}
-          <div className="mb-4 flex w-full items-center justify-end">
-            <AddTicketBtn />
-          </div>
-
+      <main className="flex min-h-screen flex-col items-center justify-start bg-[#6200EE] p-0 md:p-4">
+        <div className="min-h-[90vh] w-full overflow-x-scroll border border-neutral-600 bg-white p-1 shadow-md sm:rounded-lg md:p-3">
           {/* Filters Container */}
           <Filters />
 

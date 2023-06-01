@@ -68,7 +68,7 @@ const EditTicketPortal = ({ closePortal, ticket }: EditTicketPortalProps) => {
       </div>
       <div className="pointer-events-none -mt-6 mb-6 flex w-full items-center justify-center">
         <h1 className="text-lg font-medium text-gray-500">
-          Edit Ticket {ticket.bookingNum.toString()}
+          Edit Ticket - {ticket.bookingNum.toString()}
         </h1>
       </div>
       <form
@@ -271,7 +271,7 @@ const EditTicketPortal = ({ closePortal, ticket }: EditTicketPortalProps) => {
           type="submit"
           className="w-full rounded-lg bg-blue-700 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300"
         >
-          Edit Ticket
+          Update Ticket
         </button>
       </form>
     </div>

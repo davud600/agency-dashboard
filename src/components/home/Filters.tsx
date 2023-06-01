@@ -4,6 +4,7 @@ import {
   useSearchFilter,
 } from "~/context/FiltersContext";
 import { useOutsideClickDetector } from "~/utils/outsideClick";
+import { AddTicketBtn } from "./AddTicketComponents";
 
 const PaymentStatusDropdown = () => {
   const { paymentStatus, setPaymentStatus } = usePaymentStatusFilter();
@@ -183,8 +184,13 @@ const Filters = () => {
       {/* Payment Status Filter */}
       <PaymentStatusDropdown />
 
-      {/* Search Filter */}
-      <SearchFilter />
+      <div className="flex justify-end gap-3">
+        {/* Search Filter */}
+        <SearchFilter />
+
+        {/* Add new Ticket button */}
+        <AddTicketBtn />
+      </div>
     </div>
   );
 };
