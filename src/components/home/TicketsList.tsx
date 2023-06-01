@@ -2,6 +2,7 @@ import { type Ticket } from "~/interfaces/ticket";
 import { DeleteTicketBtn } from "./DeleteTicketComponents";
 import { EditTicketBtn } from "./EditTicketComponents";
 import { SwitchPaymentStatusBtn } from "./SwitchPaymentStatusComponents";
+import { ShowAmadeusBtn } from "./ShowAmadeusComponents";
 
 export interface TicketsListProps {
   filteredTickets: Ticket[];
@@ -43,6 +44,7 @@ export const TicketsList = ({ filteredTickets }: TicketsListProps) => {
           <td className="flex gap-2 p-2 md:gap-4">
             <SwitchPaymentStatusBtn ticket={ticket} />
             <EditTicketBtn ticket={ticket} />
+            <ShowAmadeusBtn ticket={ticket} />
             <DeleteTicketBtn ticket={ticket} />
           </td>
         </tr>

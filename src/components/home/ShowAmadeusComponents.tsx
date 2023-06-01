@@ -1,31 +1,16 @@
-import { type Dispatch, type SetStateAction, useRef, useState } from "react";
-import { useTickets } from "~/context/TicketsContext";
+import { type Dispatch, type SetStateAction, useState, useRef } from "react";
 import { type Ticket } from "~/interfaces/ticket";
 import { useOutsideClickDetector } from "~/utils/outsideClick";
 
-interface DeleteTicketPortalProps {
+interface ShowAmadeusPortalProps {
   closePortal: Dispatch<SetStateAction<undefined>>;
   ticket: Ticket;
 }
 
-const DeleteTicketPortal = ({
-  closePortal,
-  ticket,
-}: DeleteTicketPortalProps) => {
-  const { deleteTicket } = useTickets();
-
+const ShowAmadeusPortal = ({ closePortal, ticket }: ShowAmadeusPortalProps) => {
   const portalRef = useRef<HTMLDivElement>(null);
 
   useOutsideClickDetector(portalRef, closePortal);
-
-  const confirmDeleteBtnHandler = () => {
-    deleteTicket(ticket);
-    closePortal(undefined);
-  };
-
-  const cancelDeleteBtnHandler = () => {
-    closePortal(undefined);
-  };
 
   return (
     <div
@@ -48,41 +33,29 @@ const DeleteTicketPortal = ({
       </div>
       <div className="pointer-events-none -mt-6 mb-6 flex w-full items-center justify-center">
         <h1 className="text-lg font-medium text-gray-500">
-          Are you sure you want to delete this Ticket? -{" "}
-          {ticket.bookingNum.toString()}
+          Amadeus Code of Ticket - {ticket.bookingNum.toString()}
         </h1>
       </div>
       <div className="flex h-full w-full items-center justify-center gap-4">
-        <button
-          onClick={confirmDeleteBtnHandler}
-          className="rounded-sm bg-red-600 px-12 py-3 text-lg text-white transition-all hover:bg-red-800"
-        >
-          Delete
-        </button>
-        <button
-          onClick={cancelDeleteBtnHandler}
-          className="rounded-sm bg-gray-600 px-12 py-3 text-lg text-white transition-all hover:bg-gray-800"
-        >
-          Cancel
-        </button>
+        <p>{ticket.amadeusCode}</p>
       </div>
     </div>
   );
 };
 
-interface DeleteTicketBtnProps {
+interface ShowAmadeusBtnProps {
   ticket: Ticket;
 }
 
-export const DeleteTicketBtn = ({ ticket }: DeleteTicketBtnProps) => {
+export const ShowAmadeusBtn = ({ ticket }: ShowAmadeusBtnProps) => {
   const [portalOpen, setPortalOpen] = useState<boolean>(false);
 
   return (
     <>
       {portalOpen && (
-        <DeleteTicketPortal
+        <ShowAmadeusPortal
           closePortal={() => setPortalOpen(false)}
-          ticket={{ ...ticket, bookingNum: Number(ticket.bookingNum) }}
+          ticket={ticket}
         />
       )}
 
@@ -91,11 +64,12 @@ export const DeleteTicketBtn = ({ ticket }: DeleteTicketBtnProps) => {
         className="flex items-center justify-center font-medium text-blue-600 hover:underline"
       >
         <svg
-          className="h-4 w-4 fill-gray-600 transition-all hover:fill-gray-700"
+          className="h-6 w-6 fill-orange-600 transition-all hover:fill-orange-700"
           xmlns="http://www.w3.org/2000/svg"
-          viewBox="0 0 384 512"
+          height="1em"
+          viewBox="0 0 448 512"
         >
-          <path d="M376.6 84.5c11.3-13.6 9.5-33.8-4.1-45.1s-33.8-9.5-45.1 4.1L192 206 56.6 43.5C45.3 29.9 25.1 28.1 11.5 39.4S-3.9 70.9 7.4 84.5L150.3 256 7.4 427.5c-11.3 13.6-9.5 33.8 4.1 45.1s33.8 9.5 45.1-4.1L192 306 327.4 468.5c11.3 13.6 31.5 15.4 45.1 4.1s15.4-31.5 4.1-45.1L233.7 256 376.6 84.5z" />
+          <path d="M0 64C0 46.3 14.3 32 32 32H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32C14.3 96 0 81.7 0 64zM192 192c0-17.7 14.3-32 32-32H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H224c-17.7 0-32-14.3-32-32zm32 96H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H224c-17.7 0-32-14.3-32-32s14.3-32 32-32zM0 448c0-17.7 14.3-32 32-32H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32c-17.7 0-32-14.3-32-32zM127.8 268.6L25.8 347.9C15.3 356.1 0 348.6 0 335.3V176.7c0-13.3 15.3-20.8 25.8-12.6l101.9 79.3c8.2 6.4 8.2 18.9 0 25.3z" />
         </svg>
       </button>
     </>
