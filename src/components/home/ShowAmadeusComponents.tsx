@@ -37,7 +37,9 @@ const ShowAmadeusPortal = ({ closePortal, ticket }: ShowAmadeusPortalProps) => {
         </h1>
       </div>
       <div className="flex h-full w-full items-center justify-center gap-4">
-        <p>{ticket.amadeusCode}</p>
+        <div className="w-full whitespace-pre-wrap rounded-sm border border-gray-300 bg-gray-100 p-1 text-start">
+          {ticket.amadeusCode}
+        </div>
       </div>
     </div>
   );
