@@ -21,7 +21,7 @@ const SwitchTicketPaymentStatusPortal = ({
 }: SwitchTicketPaymentStatusPortalProps) => {
   const { updateTicket } = useTickets();
 
-  const [paymentMemo, setPaymentMemo] = useState<string>("");
+  const [paymentMemo, setPaymentMemo] = useState<string | undefined>("");
 
   const portalRef = useRef<HTMLDivElement>(null);
 

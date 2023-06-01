@@ -72,7 +72,7 @@ model Ticket {
     phoneNumber String
     price Float
     paymentStatus String
-    paymentMemo String?
+    paymentMemo String? @default("")
     amadeusCode String
     pdfFilePath String?
     createdAt DateTime @default(now())
