@@ -1,5 +1,5 @@
 import { type Ticket } from "~/interfaces/ticket";
-import DeleteTicketBtn from "./DeleteTicketBtn";
+import { DeleteTicketBtn } from "./DeleteTicketComponents";
 import { EditTicketBtn } from "./EditTicketComponents";
 import SwitchPaymentStatusBtn from "./SwitchPaymentStatusBtn";
 
