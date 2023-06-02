@@ -40,7 +40,7 @@ const EditTicketPortal = ({ closePortal, ticket }: EditTicketPortalProps) => {
     updateTicket(
       {
         ...ticket,
-        bookingNum: parseInt(ticket.bookingNum.toString()),
+        bookingNum: Number(ticket.bookingNum),
       },
       formData
     );

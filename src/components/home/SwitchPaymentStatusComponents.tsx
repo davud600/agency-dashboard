@@ -21,7 +21,7 @@ const SwitchTicketPaymentStatusPortal = ({
 }: SwitchTicketPaymentStatusPortalProps) => {
   const { updateTicket } = useTickets();
 
-  const [paymentMemo, setPaymentMemo] = useState<string | undefined>("");
+  const [paymentMemo, setPaymentMemo] = useState<string>("");
 
   const portalRef = useRef<HTMLDivElement>(null);
 
@@ -33,15 +33,13 @@ const SwitchTicketPaymentStatusPortal = ({
     updateTicket(
       {
         ...ticket,
-        // bookingNum: parseInt(ticket.bookingNum.toString()),
         bookingNum: Number(ticket.bookingNum),
       },
       {
         ...ticket,
-        // bookingNum: parseInt(ticket.bookingNum.toString()),
         bookingNum: Number(ticket.bookingNum),
-        paymentMemo: paymentMemo,
         paymentStatus: ticket.paymentStatus === "Paid" ? "Not Paid" : "Paid",
+        paymentMemo,
       }
     );
     closePortal(undefined);

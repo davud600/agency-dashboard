@@ -8,9 +8,9 @@ const TicketObject = z.object({
   phoneNumber: z.string(),
   price: z.number(),
   paymentStatus: z.string(),
-  paymentMemo: z.string().nullable().optional(),
+  paymentMemo: z.string().nullish(),
   amadeusCode: z.string(),
-  pdfFilePath: z.string().nullable().optional(),
+  pdfFilePath: z.string().nullish(),
 });
 
 export const ticketRouter = createTRPCRouter({

@@ -43,7 +43,7 @@ const AddTicketPortal = ({ closePortal }: AddTicketPortalProps) => {
   return (
     <div
       ref={portalRef}
-      className="absolute left-1/2 top-1/2 z-20 -ml-[21rem] -mt-[18rem] flex h-[36rem] w-[42rem] flex-col rounded-lg border border-gray-300 bg-white p-3 shadow-[0_0_0_1000px_rgba(0,0,0,.3)]"
+      className="absolute left-1/2 top-1/2 z-20 -ml-[21rem] -mt-[18rem] flex min-h-[36rem] w-[42rem] flex-col rounded-lg border border-gray-300 bg-white p-3 shadow-[0_0_0_1000px_rgba(0,0,0,.3)]"
     >
       <div className="flex h-fit w-full justify-start">
         <button
@@ -277,6 +277,7 @@ export const AddTicketBtn = () => {
       {portalOpen && (
         <AddTicketPortal closePortal={() => setPortalOpen(false)} />
       )}
+
       <button
         onClick={() => setPortalOpen((prevPortalOpen) => !prevPortalOpen)}
         className="inline-flex items-center rounded-lg border border-gray-300 bg-white px-3 py-1.5 text-sm font-medium text-gray-500 transition-all hover:border-green-600 hover:bg-green-600 hover:text-white"
