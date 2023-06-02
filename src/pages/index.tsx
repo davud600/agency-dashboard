@@ -1,7 +1,6 @@
 import { type NextPage } from "next";
 import Head from "next/head";
 import Filters from "~/components/home/Filters";
-import { AddTicketBtn } from "~/components/home/AddTicketComponents";
 import TicketsTable from "~/components/home/TicketsTable";
 
 const Home: NextPage = () => {

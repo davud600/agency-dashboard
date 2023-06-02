@@ -6,6 +6,7 @@ import {
   type Dispatch,
   type SetStateAction,
   useEffect,
+  useCallback,
 } from "react";
 import { type Ticket } from "~/interfaces/ticket";
 import { useTickets } from "./TicketsContext";
@@ -86,17 +87,28 @@ const FiltersProvider = ({ children }: { children: ReactNode }) => {
     return filteredTicketsList;
   };
 
-  const filterTickets = (ticketsList: Ticket[]) => {
-    setFilteredTicketsList(
-      getFilteredTicketsByPaymentStatus(getFilteredTicketsBySearch(ticketsList))
-    );
-  };
+  // const newLocal = (ticketsList: Ticket[]) => {
+  //   setFilteredTicketsList(
+  //     getFilteredTicketsByPaymentStatus(getFilteredTicketsBySearch(ticketsList))
+  //   );
+  // };
+
+  const filterTickets = useCallback(
+    (ticketsList: Ticket[]) => {
+      setFilteredTicketsList(
+        getFilteredTicketsByPaymentStatus(
+          getFilteredTicketsBySearch(ticketsList)
+        )
+      );
+    },
+    [ticketsList]
+  );
 
   useEffect(() => {
     if (!!!ticketsList) return;
 
     filterTickets(ticketsList);
-  }, [searchQuery, paymentStatus, ticketsList]);
+  }, [searchQuery, paymentStatus, ticketsList, filterTickets]);
 
   const searchFilterContextValue = {
     searchQuery,
