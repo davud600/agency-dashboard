@@ -50,6 +50,8 @@ export const usePaymentStatusFilter = () => {
  */
 const FiltersProvider = ({ children }: { children: ReactNode }) => {
   const { ticketsList, setFilteredTicketsList } = useTickets();
+  // const { isViewingDeletedTickets, setIsViewingDeletedTickets } =
+  //   useState<boolean>(false);
 
   const [searchQuery, setSearchQuery] = useState("");
   const [paymentStatus, setPaymentStatus] = useState("");

@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { type ChangeEvent, useRef, useState } from "react";
 import {
   usePaymentStatusFilter,
@@ -5,6 +6,7 @@ import {
 } from "~/context/FiltersContext";
 import { useOutsideClickDetector } from "~/utils/outsideClick";
 import { AddTicketBtn } from "./AddTicketComponents";
+import { DeleteTicketBtn } from "./DeleteTicketComponents";
 
 const PaymentStatusDropdown = () => {
   const { paymentStatus, setPaymentStatus } = usePaymentStatusFilter();
@@ -179,10 +181,21 @@ const SearchFilter = () => {
 };
 
 const Filters = () => {
+  // const {}
+
   return (
     <div className="flex items-center justify-between pb-4">
-      {/* Payment Status Filter */}
-      <PaymentStatusDropdown />
+      <div className="flex items-center justify-start gap-3">
+        {/* Payment Status Filter */}
+        <PaymentStatusDropdown />
+
+        {/* View Deleted Tickets */}
+        {
+          <button className="inline-flex items-center rounded-lg border border-gray-300 bg-white px-3 py-1.5 text-sm font-medium text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-4 focus:ring-gray-200">
+            View Deleted Tickets
+          </button>
+        }
+      </div>
 
       <div className="flex justify-end gap-3">
         {/* Search Filter */}
