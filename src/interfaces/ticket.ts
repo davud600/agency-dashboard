@@ -10,6 +10,7 @@ export interface Ticket {
   paymentMemo?: string;
   amadeusCode: string;
   pdfFilePath?: string;
+  deleted?: boolean;
 }
 
 export interface DbTicket extends Ticket {

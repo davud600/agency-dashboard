@@ -1,12 +1,11 @@
-import Link from "next/link";
 import { type ChangeEvent, useRef, useState } from "react";
 import {
+  useDeletedFilter,
   usePaymentStatusFilter,
   useSearchFilter,
 } from "~/context/FiltersContext";
 import { useOutsideClickDetector } from "~/utils/outsideClick";
 import { AddTicketBtn } from "./AddTicketComponents";
-import { DeleteTicketBtn } from "./DeleteTicketComponents";
 
 const PaymentStatusDropdown = () => {
   const { paymentStatus, setPaymentStatus } = usePaymentStatusFilter();
@@ -181,7 +180,8 @@ const SearchFilter = () => {
 };
 
 const Filters = () => {
-  // const {}
+  const { isViewingDeletedTickets, setIsViewingDeletedTickets } =
+    useDeletedFilter();
 
   return (
     <div className="flex items-center justify-between pb-4">
@@ -190,11 +190,21 @@ const Filters = () => {
         <PaymentStatusDropdown />
 
         {/* View Deleted Tickets */}
-        {
-          <button className="inline-flex items-center rounded-lg border border-gray-300 bg-white px-3 py-1.5 text-sm font-medium text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-4 focus:ring-gray-200">
+        {isViewingDeletedTickets ? (
+          <button
+            onClick={() => setIsViewingDeletedTickets(false)}
+            className="inline-flex items-center rounded-lg border border-gray-300 bg-white px-3 py-1.5 text-sm font-medium text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-4 focus:ring-gray-200"
+          >
+            View NOT Deleted Tickets
+          </button>
+        ) : (
+          <button
+            onClick={() => setIsViewingDeletedTickets(true)}
+            className="inline-flex items-center rounded-lg border border-gray-300 bg-white px-3 py-1.5 text-sm font-medium text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-4 focus:ring-gray-200"
+          >
             View Deleted Tickets
           </button>
-        }
+        )}
       </div>
 
       <div className="flex justify-end gap-3">

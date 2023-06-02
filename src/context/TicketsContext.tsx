@@ -17,6 +17,8 @@ interface TicketsContextType {
   createTicket: (ticketData: Ticket) => void;
   updateTicket: (ticketToUpdate: Ticket, ticketData: Ticket) => void;
   deleteTicket: (ticketToDelete: Ticket) => void;
+  softDeleteTicket: (ticketToDelete: Ticket) => void;
+  recoverTicket: (ticketToRecover: Ticket) => void;
   switchTicketPaymentStatus: (ticketToUpdate: Ticket) => void;
 }
 
@@ -27,6 +29,8 @@ export const TicketsContext = createContext<TicketsContextType>({
   createTicket: () => false,
   updateTicket: () => false,
   deleteTicket: () => false,
+  softDeleteTicket: () => false,
+  recoverTicket: () => false,
   switchTicketPaymentStatus: () => false,
 });
 
@@ -62,6 +66,18 @@ const TicketsProvider = ({ children }: { children: ReactNode }) => {
     },
   });
 
+  const ticketsSoftDeleteMutation = api.tickets.softDelete.useMutation({
+    onSuccess: async () => {
+      await ticketsQueryData.refetch();
+    },
+  });
+
+  const ticketsRecoverMutation = api.tickets.recover.useMutation({
+    onSuccess: async () => {
+      await ticketsQueryData.refetch();
+    },
+  });
+
   useEffect(() => {
     const tickets: unknown = ticketsQueryData.data;
 
@@ -78,6 +94,14 @@ const TicketsProvider = ({ children }: { children: ReactNode }) => {
 
   const deleteTicket = (ticketToDelete: Ticket) => {
     ticketsDeleteMutation.mutate({ ticketToDelete });
+  };
+
+  const softDeleteTicket = (ticketToDelete: Ticket) => {
+    ticketsSoftDeleteMutation.mutate({ ticketToDelete });
+  };
+
+  const recoverTicket = (ticketToRecover: Ticket) => {
+    ticketsRecoverMutation.mutate({ ticketToRecover });
   };
 
   const switchTicketPaymentStatus = (ticketToUpdate: Ticket) => {
@@ -97,8 +121,10 @@ const TicketsProvider = ({ children }: { children: ReactNode }) => {
     setFilteredTicketsList,
     createTicket,
     updateTicket,
-    deleteTicket,
     switchTicketPaymentStatus,
+    deleteTicket,
+    softDeleteTicket,
+    recoverTicket,
   };
 
   return (

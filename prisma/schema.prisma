@@ -75,6 +75,7 @@ model Ticket {
     paymentMemo String? @default("")
     amadeusCode String @db.LongText
     pdfFilePath String?
+    deleted Boolean? @default(false)
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
 }

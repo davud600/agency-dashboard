@@ -11,6 +11,7 @@ const TicketObject = z.object({
   paymentMemo: z.string().nullish(),
   amadeusCode: z.string(),
   pdfFilePath: z.string().nullish(),
+  deleted: z.boolean().nullish(),
 });
 
 export const ticketRouter = createTRPCRouter({
@@ -40,6 +41,24 @@ export const ticketRouter = createTRPCRouter({
     .mutation(async ({ input: { ticketToDelete }, ctx }) => {
       await ctx.prisma.ticket.delete({
         where: { bookingNum: ticketToDelete.bookingNum },
+      });
+    }),
+
+  softDelete: publicProcedure
+    .input(z.object({ ticketToDelete: TicketObject }))
+    .mutation(async ({ input: { ticketToDelete }, ctx }) => {
+      await ctx.prisma.ticket.update({
+        where: { bookingNum: ticketToDelete.bookingNum },
+        data: { ...ticketToDelete, deleted: true },
+      });
+    }),
+
+  recover: publicProcedure
+    .input(z.object({ ticketToRecover: TicketObject }))
+    .mutation(async ({ input: { ticketToRecover }, ctx }) => {
+      await ctx.prisma.ticket.update({
+        where: { bookingNum: ticketToRecover.bookingNum },
+        data: { ...ticketToRecover, deleted: false },
       });
     }),
 });
