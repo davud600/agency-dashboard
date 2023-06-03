@@ -12,6 +12,7 @@ import { api } from "~/utils/api";
 
 interface TicketsContextType {
   ticketsList: Ticket[];
+  totalNumberOfTickets: number;
   filteredTickets: Ticket[];
   totalProfits: number;
   setFilteredTicketsList: Dispatch<SetStateAction<Ticket[]>>;
@@ -21,10 +22,15 @@ interface TicketsContextType {
   softDeleteTicket: (ticketToDelete: Ticket) => void;
   recoverTicket: (ticketToRecover: Ticket) => void;
   switchTicketPaymentStatus: (ticketToUpdate: Ticket) => void;
+  limit: number;
+  setLimit: Dispatch<SetStateAction<number>>;
+  page: number;
+  setPage: Dispatch<SetStateAction<number>>;
 }
 
 export const TicketsContext = createContext<TicketsContextType>({
   ticketsList: [],
+  totalNumberOfTickets: 0,
   filteredTickets: [],
   totalProfits: 0,
   setFilteredTicketsList: () => false,
@@ -34,6 +40,10 @@ export const TicketsContext = createContext<TicketsContextType>({
   softDeleteTicket: () => false,
   recoverTicket: () => false,
   switchTicketPaymentStatus: () => false,
+  limit: 20,
+  setLimit: () => false,
+  page: 0,
+  setPage: () => false,
 });
 
 export const useTickets = () => {
@@ -41,20 +51,27 @@ export const useTickets = () => {
 };
 
 const TicketsProvider = ({ children }: { children: ReactNode }) => {
+  const [limit, setLimit] = useState<number>(20);
+  const [page, setPage] = useState<number>(0);
+
   const [ticketsList, setTicketsList] = useState<DbTicket[]>([]);
+  const [totalNumberOfTickets, setTotalNumberOfTickets] = useState<number>(0);
   const [totalProfits, setTotalProfits] = useState<number>(0);
 
   const [filteredTickets, setFilteredTicketsList] = useState<Ticket[]>(
     ticketsList as Ticket[]
   );
 
-  const ticketsQueryData = api.tickets.getAll.useQuery();
+  const ticketsQueryData = api.tickets.getAllLimited.useQuery({ limit, page });
   const profitsQueryData = api.tickets.getTotalProfits.useQuery();
+  const numberOfTicketsQueryData =
+    api.tickets.getTotalNumberOfTickets.useQuery();
 
   const ticketsCreateMutation = api.tickets.create.useMutation({
     onSuccess: async () => {
       await ticketsQueryData.refetch();
       await profitsQueryData.refetch();
+      await numberOfTicketsQueryData.refetch();
       setFilteredTicketsList(ticketsList);
     },
   });
@@ -63,6 +80,7 @@ const TicketsProvider = ({ children }: { children: ReactNode }) => {
     onSuccess: async () => {
       await ticketsQueryData.refetch();
       await profitsQueryData.refetch();
+      await numberOfTicketsQueryData.refetch();
     },
   });
 
@@ -70,6 +88,7 @@ const TicketsProvider = ({ children }: { children: ReactNode }) => {
     onSuccess: async () => {
       await ticketsQueryData.refetch();
       await profitsQueryData.refetch();
+      await numberOfTicketsQueryData.refetch();
     },
   });
 
@@ -77,6 +96,7 @@ const TicketsProvider = ({ children }: { children: ReactNode }) => {
     onSuccess: async () => {
       await ticketsQueryData.refetch();
       await profitsQueryData.refetch();
+      await numberOfTicketsQueryData.refetch();
     },
   });
 
@@ -84,11 +104,14 @@ const TicketsProvider = ({ children }: { children: ReactNode }) => {
     onSuccess: async () => {
       await ticketsQueryData.refetch();
       await profitsQueryData.refetch();
+      await numberOfTicketsQueryData.refetch();
     },
   });
 
   useEffect(() => {
     const tickets: unknown = ticketsQueryData.data;
+
+    if (!!!tickets) return;
 
     setTicketsList(tickets as DbTicket[]);
   }, [ticketsQueryData]);
@@ -100,6 +123,14 @@ const TicketsProvider = ({ children }: { children: ReactNode }) => {
 
     setTotalProfits(parseFloat((totalProfits as number).toFixed(2)));
   }, [profitsQueryData]);
+
+  useEffect(() => {
+    const totalNumberOfTickets: unknown = numberOfTicketsQueryData.data;
+
+    if (!!!totalNumberOfTickets) return;
+
+    setTotalNumberOfTickets(totalNumberOfTickets as number);
+  }, [numberOfTicketsQueryData]);
 
   const createTicket = (ticketData: Ticket) => {
     ticketsCreateMutation.mutate(ticketData);
@@ -134,6 +165,7 @@ const TicketsProvider = ({ children }: { children: ReactNode }) => {
 
   const value = {
     ticketsList,
+    totalNumberOfTickets,
     filteredTickets,
     totalProfits,
     setFilteredTicketsList,
@@ -143,6 +175,10 @@ const TicketsProvider = ({ children }: { children: ReactNode }) => {
     deleteTicket,
     softDeleteTicket,
     recoverTicket,
+    limit,
+    setLimit,
+    page,
+    setPage,
   };
 
   return (
