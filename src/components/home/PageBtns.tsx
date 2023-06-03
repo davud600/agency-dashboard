@@ -63,9 +63,18 @@ const RightBtn = () => {
 };
 
 const PageBtns = () => {
+  const { page, totalNumberOfTickets, limit } = useTickets();
+
   return (
-    <div className="flex w-full justify-between p-4">
+    <div className="flex w-full items-center justify-between p-4">
       <LeftBtn />
+
+      <div className="flex w-full items-center justify-center">
+        <span>
+          Page: {page + 1} / {Math.ceil(totalNumberOfTickets / limit)}
+        </span>
+      </div>
+
       <RightBtn />
     </div>
   );
