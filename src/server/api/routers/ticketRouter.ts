@@ -82,4 +82,8 @@ export const ticketRouter = createTRPCRouter({
 
     return totalProfitPrice[0]?.totalSum;
   }),
+
+  getTotalNumberOfTickets: publicProcedure.query(async ({ ctx }) => {
+    return await ctx.prisma.ticket.count();
+  }),
 });
