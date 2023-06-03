@@ -71,6 +71,7 @@ model Ticket {
     lastName String
     phoneNumber String
     price Float
+    profitPrice Float
     paymentStatus String
     paymentMemo String? @default("")
     amadeusCode String @db.LongText
