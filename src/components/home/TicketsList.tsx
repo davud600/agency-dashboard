@@ -3,6 +3,8 @@ import { DeleteTicketBtn } from "./DeleteTicketComponents";
 import { EditTicketBtn } from "./EditTicketComponents";
 import { SwitchPaymentStatusBtn } from "./SwitchPaymentStatusComponents";
 import { ShowAmadeusBtn } from "./ShowAmadeusComponents";
+import { RecoverTicketBtn } from "./RecoverTicketComponents";
+import { ShowPdfFileBtn } from "./ShowPdfFileBtn";
 
 export interface TicketsListProps {
   filteredTickets: Ticket[];
@@ -45,7 +47,9 @@ export const TicketsList = ({ filteredTickets }: TicketsListProps) => {
             <SwitchPaymentStatusBtn ticket={ticket} />
             <EditTicketBtn ticket={ticket} />
             <ShowAmadeusBtn ticket={ticket} />
+            <ShowPdfFileBtn ticket={ticket} />
             <DeleteTicketBtn ticket={ticket} />
+            {ticket.deleted && <RecoverTicketBtn ticket={ticket} />}
           </td>
         </tr>
       ))}

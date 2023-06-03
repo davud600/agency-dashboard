@@ -28,6 +28,23 @@ export const useSearchFilter = () => {
 };
 
 /**
+ * Deleted Filter Context
+ */
+interface DeletedFilterContextType {
+  isViewingDeletedTickets: boolean;
+  setIsViewingDeletedTickets: Dispatch<SetStateAction<boolean>>;
+}
+
+export const DeletedFilterContext = createContext<DeletedFilterContextType>({
+  isViewingDeletedTickets: false,
+  setIsViewingDeletedTickets: () => false,
+});
+
+export const useDeletedFilter = () => {
+  return useContext(DeletedFilterContext);
+};
+
+/**
  * Payment Status Filter Context
  */
 interface PaymentStatusFilterContextType {
@@ -52,6 +69,7 @@ const FiltersProvider = ({ children }: { children: ReactNode }) => {
   const { ticketsList, setFilteredTicketsList } = useTickets();
 
   const [searchQuery, setSearchQuery] = useState("");
+  const [isViewingDeletedTickets, setIsViewingDeletedTickets] = useState(false);
   const [paymentStatus, setPaymentStatus] = useState("");
 
   const getFilteredTicketsBySearch = (ticketsList: Ticket[]) => {
@@ -74,6 +92,16 @@ const FiltersProvider = ({ children }: { children: ReactNode }) => {
     return filteredTicketsList;
   };
 
+  const getFilteredByDeleteTickets = (ticketsList: Ticket[]) => {
+    let filteredTicketsList = [...ticketsList];
+
+    filteredTicketsList = filteredTicketsList.filter(
+      (item) => item.deleted === isViewingDeletedTickets
+    );
+
+    return filteredTicketsList;
+  };
+
   const getFilteredTicketsByPaymentStatus = (ticketsList: Ticket[]) => {
     let filteredTicketsList = [...ticketsList];
 
@@ -88,7 +116,9 @@ const FiltersProvider = ({ children }: { children: ReactNode }) => {
 
   const filterTickets = (ticketsList: Ticket[]) => {
     setFilteredTicketsList(
-      getFilteredTicketsByPaymentStatus(getFilteredTicketsBySearch(ticketsList))
+      getFilteredTicketsByPaymentStatus(
+        getFilteredByDeleteTickets(getFilteredTicketsBySearch(ticketsList))
+      )
     );
   };
 
@@ -96,11 +126,17 @@ const FiltersProvider = ({ children }: { children: ReactNode }) => {
     if (!!!ticketsList) return;
 
     filterTickets(ticketsList);
-  }, [searchQuery, paymentStatus, ticketsList]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [searchQuery, paymentStatus, ticketsList, isViewingDeletedTickets]);
 
   const searchFilterContextValue = {
     searchQuery,
     setSearchQuery,
+  };
+
+  const deletedFilterContextValue = {
+    isViewingDeletedTickets,
+    setIsViewingDeletedTickets,
   };
 
   const paymentStatusFilterContextValue = {
@@ -110,11 +146,13 @@ const FiltersProvider = ({ children }: { children: ReactNode }) => {
 
   return (
     <SearchFilterContext.Provider value={searchFilterContextValue}>
-      <PaymentStatusFilterContext.Provider
-        value={paymentStatusFilterContextValue}
-      >
-        {children}
-      </PaymentStatusFilterContext.Provider>
+      <DeletedFilterContext.Provider value={deletedFilterContextValue}>
+        <PaymentStatusFilterContext.Provider
+          value={paymentStatusFilterContextValue}
+        >
+          {children}
+        </PaymentStatusFilterContext.Provider>
+      </DeletedFilterContext.Provider>
     </SearchFilterContext.Provider>
   );
 };
