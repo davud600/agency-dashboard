@@ -29,6 +29,7 @@ export const TicketsList = ({ filteredTickets }: TicketsListProps) => {
           </td>
           <td className="p-2">{ticket.phoneNumber}</td>
           <td className="p-2">{ticket.price}€</td>
+          <td className="p-2">{ticket.profitPrice}€</td>
           <td
             className="p-2"
             style={{
