@@ -21,6 +21,9 @@ const TicketsTable = () => {
             Price
           </th>
           <th scope="col" className="p-2">
+            Profit
+          </th>
+          <th scope="col" className="p-2">
             Payment Status
           </th>
           <th scope="col" className="p-2">
