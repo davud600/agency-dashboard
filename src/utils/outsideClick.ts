@@ -9,7 +9,7 @@ import {
  * Hook that takes callback and element ref to do something when clicked outside that element
  */
 export function useOutsideClickDetector(
-  ref: RefObject<HTMLDivElement>,
+  ref: RefObject<HTMLDivElement | HTMLButtonElement>,
   callback: Dispatch<SetStateAction<undefined>>
 ) {
   useEffect(() => {
@@ -17,7 +17,10 @@ export function useOutsideClickDetector(
      * Check if clicked on outside of element
      */
     function handleClickOutside(event: MouseEvent) {
-      if (ref.current && !ref.current.contains(event.target as unknown as Node)) {
+      if (
+        ref.current &&
+        !ref.current.contains(event.target as unknown as Node)
+      ) {
         callback(undefined);
       }
     }

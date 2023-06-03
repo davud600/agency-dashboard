@@ -8,14 +8,18 @@ interface ShowAmadeusPortalProps {
 }
 
 const ShowAmadeusPortal = ({ closePortal, ticket }: ShowAmadeusPortalProps) => {
+  const [copiedText, setCopiedText] = useState<boolean>(false);
+
   const portalRef = useRef<HTMLDivElement>(null);
+  const copyBtnRef = useRef<HTMLButtonElement>(null);
 
   useOutsideClickDetector(portalRef, closePortal);
+  useOutsideClickDetector(copyBtnRef, () => setCopiedText(false));
 
   return (
     <div
       ref={portalRef}
-      className="absolute left-1/2 top-1/2 z-20 -ml-[21rem] -mt-[18rem] flex h-[36rem] w-[42rem] flex-col rounded-lg border border-gray-300 bg-white p-3 shadow-[0_0_0_1000px_rgba(0,0,0,.3)]"
+      className="absolute left-1/2 top-1/2 z-20 -ml-[21rem] -mt-[18rem] flex min-h-[36rem] w-[42rem] flex-col rounded-lg border border-gray-300 bg-white p-3 shadow-[0_0_0_1000px_rgba(0,0,0,.3)]"
     >
       <div className="flex h-fit w-full justify-start">
         <button
@@ -35,6 +39,18 @@ const ShowAmadeusPortal = ({ closePortal, ticket }: ShowAmadeusPortalProps) => {
         <h1 className="text-lg font-medium text-gray-500">
           Amadeus Code of Ticket - {ticket.bookingNum.toString()}
         </h1>
+      </div>
+      <div className="mb-2">
+        <button
+          ref={copyBtnRef}
+          className="inline-flex items-center rounded-lg border border-gray-300 bg-white px-3 py-1.5 text-sm font-medium text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-4 focus:ring-gray-200"
+          onClick={() => {
+            void navigator.clipboard.writeText(ticket.amadeusCode);
+            setCopiedText(true);
+          }}
+        >
+          {copiedText ? "Copied" : "Copy"}
+        </button>
       </div>
       <div className="flex h-full w-full items-center justify-center gap-4">
         <div className="w-full whitespace-pre-wrap rounded-sm border border-gray-300 bg-gray-100 p-1 text-start">
