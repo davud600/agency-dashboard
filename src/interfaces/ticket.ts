@@ -6,6 +6,7 @@ export interface Ticket {
   lastName: string;
   phoneNumber: string;
   price: number;
+  profitPrice: number;
   paymentStatus: TicketPaymentStatus;
   paymentMemo?: string;
   amadeusCode: string;

@@ -7,6 +7,7 @@ const TicketObject = z.object({
   lastName: z.string(),
   phoneNumber: z.string(),
   price: z.number(),
+  profitPrice: z.number(),
   paymentStatus: z.string(),
   paymentMemo: z.string().nullish(),
   amadeusCode: z.string(),
@@ -15,8 +16,8 @@ const TicketObject = z.object({
 });
 
 export const ticketRouter = createTRPCRouter({
-  getAll: publicProcedure.query(({ ctx }) => {
-    return ctx.prisma.ticket.findMany({
+  getAll: publicProcedure.query(async ({ ctx }) => {
+    return await ctx.prisma.ticket.findMany({
       orderBy: { createdAt: "desc" },
     });
   }),
@@ -74,4 +75,11 @@ export const ticketRouter = createTRPCRouter({
         data: { ...ticketToRecover, deleted: false },
       });
     }),
+
+  getTotalProfits: publicProcedure.query(async ({ ctx }) => {
+    const totalProfitPrice: { totalSum: number }[] = await ctx.prisma
+      .$queryRaw`SELECT SUM(profitPrice) AS totalSum FROM Ticket`;
+
+    return totalProfitPrice[0]?.totalSum;
+  }),
 });

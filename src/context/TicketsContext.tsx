@@ -13,6 +13,7 @@ import { api } from "~/utils/api";
 interface TicketsContextType {
   ticketsList: Ticket[];
   filteredTickets: Ticket[];
+  totalProfits: number;
   setFilteredTicketsList: Dispatch<SetStateAction<Ticket[]>>;
   createTicket: (ticketData: Ticket) => void;
   updateTicket: (ticketToUpdate: Ticket, ticketData: Ticket) => void;
@@ -25,6 +26,7 @@ interface TicketsContextType {
 export const TicketsContext = createContext<TicketsContextType>({
   ticketsList: [],
   filteredTickets: [],
+  totalProfits: 0,
   setFilteredTicketsList: () => false,
   createTicket: () => false,
   updateTicket: () => false,
@@ -40,16 +42,19 @@ export const useTickets = () => {
 
 const TicketsProvider = ({ children }: { children: ReactNode }) => {
   const [ticketsList, setTicketsList] = useState<DbTicket[]>([]);
+  const [totalProfits, setTotalProfits] = useState<number>(0);
 
   const [filteredTickets, setFilteredTicketsList] = useState<Ticket[]>(
     ticketsList as Ticket[]
   );
 
   const ticketsQueryData = api.tickets.getAll.useQuery();
+  const profitsQueryData = api.tickets.getTotalProfits.useQuery();
 
   const ticketsCreateMutation = api.tickets.create.useMutation({
     onSuccess: async () => {
       await ticketsQueryData.refetch();
+      await profitsQueryData.refetch();
       setFilteredTicketsList(ticketsList);
     },
   });
@@ -57,24 +62,28 @@ const TicketsProvider = ({ children }: { children: ReactNode }) => {
   const ticketsUpdateMutation = api.tickets.update.useMutation({
     onSuccess: async () => {
       await ticketsQueryData.refetch();
+      await profitsQueryData.refetch();
     },
   });
 
   const ticketsDeleteMutation = api.tickets.delete.useMutation({
     onSuccess: async () => {
       await ticketsQueryData.refetch();
+      await profitsQueryData.refetch();
     },
   });
 
   const ticketsSoftDeleteMutation = api.tickets.softDelete.useMutation({
     onSuccess: async () => {
       await ticketsQueryData.refetch();
+      await profitsQueryData.refetch();
     },
   });
 
   const ticketsRecoverMutation = api.tickets.recover.useMutation({
     onSuccess: async () => {
       await ticketsQueryData.refetch();
+      await profitsQueryData.refetch();
     },
   });
 
@@ -83,6 +92,14 @@ const TicketsProvider = ({ children }: { children: ReactNode }) => {
 
     setTicketsList(tickets as DbTicket[]);
   }, [ticketsQueryData]);
+
+  useEffect(() => {
+    const totalProfits: unknown = profitsQueryData.data;
+
+    if (!!!totalProfits) return;
+
+    setTotalProfits(parseFloat((totalProfits as number).toFixed(2)));
+  }, [profitsQueryData]);
 
   const createTicket = (ticketData: Ticket) => {
     ticketsCreateMutation.mutate(ticketData);
@@ -118,6 +135,7 @@ const TicketsProvider = ({ children }: { children: ReactNode }) => {
   const value = {
     ticketsList,
     filteredTickets,
+    totalProfits,
     setFilteredTicketsList,
     createTicket,
     updateTicket,

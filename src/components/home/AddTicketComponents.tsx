@@ -24,6 +24,7 @@ const AddTicketPortal = ({ closePortal }: AddTicketPortalProps) => {
     lastName: "",
     phoneNumber: "",
     price: 0,
+    profitPrice: 0,
     paymentStatus: "Not Paid",
     amadeusCode: "",
     pdfFile: "",
@@ -200,29 +201,55 @@ const AddTicketPortal = ({ closePortal }: AddTicketPortalProps) => {
             </div>
           </div>
           <div className="mb-3 flex w-full justify-center gap-2">
-            <div className="w-1/2">
-              <label
-                htmlFor="price"
-                className="mb-2 block text-sm font-medium text-gray-600"
-              >
-                Ticket Price
-              </label>
-              <input
-                type="number"
-                id="price"
-                className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500"
-                placeholder="0.99€"
-                required
-                value={formData.price}
-                onChange={(e: ChangeEvent<HTMLInputElement>) =>
-                  setFormData((prevFormData) => {
-                    return {
-                      ...prevFormData,
-                      price: parseFloat(e.target.value),
-                    };
-                  })
-                }
-              />
+            <div className="flex w-1/2 justify-center gap-2">
+              <div className="w-1/2">
+                <label
+                  htmlFor="price"
+                  className="mb-2 block text-sm font-medium text-gray-600"
+                >
+                  Ticket Price
+                </label>
+                <input
+                  type="number"
+                  id="price"
+                  className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500"
+                  placeholder="0.99€"
+                  required
+                  value={formData.price}
+                  onChange={(e: ChangeEvent<HTMLInputElement>) =>
+                    setFormData((prevFormData) => {
+                      return {
+                        ...prevFormData,
+                        price: parseFloat(e.target.value),
+                      };
+                    })
+                  }
+                />
+              </div>
+              <div className="w-1/2">
+                <label
+                  htmlFor="profitPrice"
+                  className="mb-2 block text-sm font-medium text-gray-600"
+                >
+                  Profit Price
+                </label>
+                <input
+                  type="number"
+                  id="profitPrice"
+                  className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500"
+                  placeholder="0.99€"
+                  required
+                  value={formData.profitPrice}
+                  onChange={(e: ChangeEvent<HTMLInputElement>) =>
+                    setFormData((prevFormData) => {
+                      return {
+                        ...prevFormData,
+                        profitPrice: parseFloat(e.target.value),
+                      };
+                    })
+                  }
+                />
+              </div>
             </div>
             <div className="w-1/2">
               <label
