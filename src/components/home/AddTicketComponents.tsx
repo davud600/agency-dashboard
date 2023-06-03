@@ -26,7 +26,7 @@ const AddTicketPortal = ({ closePortal }: AddTicketPortalProps) => {
     price: 0,
     paymentStatus: "Not Paid",
     amadeusCode: "",
-    pdfFilePath: "",
+    pdfFile: "",
   });
 
   const portalRef = useRef<HTMLDivElement>(null);
@@ -36,8 +36,35 @@ const AddTicketPortal = ({ closePortal }: AddTicketPortalProps) => {
   const submitHandler = (e: FormEvent) => {
     e.preventDefault();
 
-    createTicket(formData);
-    closePortal(undefined);
+    // Get the selected file from the input
+    const fileInput = document.getElementById("pdfFile") as HTMLInputElement;
+
+    if (fileInput.files && fileInput.files.length > 0) {
+      const selectedFile = fileInput.files[0];
+
+      if (!!selectedFile) {
+        const reader = new FileReader();
+        reader.readAsDataURL(selectedFile);
+
+        reader.onload = () => {
+          if (typeof reader.result === "string") {
+            const updatedFormData: Ticket = {
+              ...formData,
+              pdfFile: reader.result,
+            };
+
+            createTicket(updatedFormData);
+            closePortal(undefined);
+          }
+        };
+      } else {
+        createTicket(formData);
+        closePortal(undefined);
+      }
+    } else {
+      createTicket(formData);
+      closePortal(undefined);
+    }
   };
 
   return (
@@ -254,6 +281,8 @@ const AddTicketPortal = ({ closePortal }: AddTicketPortalProps) => {
             <input
               className="block w-full cursor-pointer rounded-lg border border-gray-300 bg-gray-50 p-2 text-sm text-gray-900 focus:outline-none"
               id="pdfFile"
+              accept=".pdf"
+              multiple={false}
               type="file"
             />
           </div>

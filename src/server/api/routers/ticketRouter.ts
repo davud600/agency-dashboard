@@ -10,7 +10,7 @@ const TicketObject = z.object({
   paymentStatus: z.string(),
   paymentMemo: z.string().nullish(),
   amadeusCode: z.string(),
-  pdfFilePath: z.string().nullish(),
+  pdfFile: z.string().nullish(),
   deleted: z.boolean().nullish(),
 });
 
@@ -20,6 +20,19 @@ export const ticketRouter = createTRPCRouter({
       orderBy: { createdAt: "desc" },
     });
   }),
+
+  // getTicketPdfFile: publicProcedure
+  //   .input(TicketObject)
+  //   .query(({ input, ctx }) => {
+  //     return ctx.prisma.ticket.findFirst({
+  //       select: {
+  //         pdfFile: true,
+  //       },
+  //       where: {
+  //         bookingNum: input.bookingNum,
+  //       },
+  //     });
+  //   }),
 
   create: publicProcedure
     .input(TicketObject)

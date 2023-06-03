@@ -27,7 +27,7 @@ const EditTicketPortal = ({ closePortal, ticket }: EditTicketPortalProps) => {
     price: ticket.price,
     paymentStatus: ticket.paymentStatus,
     amadeusCode: ticket.amadeusCode,
-    pdfFilePath: ticket.pdfFilePath,
+    pdfFile: ticket.pdfFile,
   });
 
   const portalRef = useRef<HTMLDivElement>(null);
@@ -37,14 +37,53 @@ const EditTicketPortal = ({ closePortal, ticket }: EditTicketPortalProps) => {
   const submitHandler = (e: FormEvent) => {
     e.preventDefault();
 
-    updateTicket(
-      {
-        ...ticket,
-        bookingNum: Number(ticket.bookingNum),
-      },
-      formData
-    );
-    closePortal(undefined);
+    // Get the selected file from the input
+    const fileInput = document.getElementById("pdfFile") as HTMLInputElement;
+
+    if (fileInput.files && fileInput.files.length > 0) {
+      const selectedFile = fileInput.files[0];
+
+      if (!!selectedFile) {
+        const reader = new FileReader();
+        reader.readAsDataURL(selectedFile);
+
+        reader.onload = () => {
+          if (typeof reader.result === "string") {
+            const updatedFormData: Ticket = {
+              ...formData,
+              pdfFile: reader.result,
+            };
+
+            updateTicket(
+              {
+                ...ticket,
+                bookingNum: Number(ticket.bookingNum),
+              },
+              updatedFormData
+            );
+            closePortal(undefined);
+          }
+        };
+      } else {
+        updateTicket(
+          {
+            ...ticket,
+            bookingNum: Number(ticket.bookingNum),
+          },
+          formData
+        );
+        closePortal(undefined);
+      }
+    } else {
+      updateTicket(
+        {
+          ...ticket,
+          bookingNum: Number(ticket.bookingNum),
+        },
+        formData
+      );
+      closePortal(undefined);
+    }
   };
 
   return (

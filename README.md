@@ -8,4 +8,6 @@
 
 - file uploads
 - action button that opens pdf file
+- total price to show above the tickets table
+- filter for date created (7 days ago, 30 days ago...)
 - auth

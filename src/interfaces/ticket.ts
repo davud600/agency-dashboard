@@ -9,7 +9,7 @@ export interface Ticket {
   paymentStatus: TicketPaymentStatus;
   paymentMemo?: string;
   amadeusCode: string;
-  pdfFilePath?: string;
+  pdfFile?: string;
   deleted?: boolean;
 }
 
