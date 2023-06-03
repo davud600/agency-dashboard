@@ -22,6 +22,28 @@ export const ticketRouter = createTRPCRouter({
     });
   }),
 
+  getAllLimited: publicProcedure
+    .input(
+      z
+        .object({
+          page: z.number(),
+          limit: z.number(),
+        })
+        .default({
+          page: 0,
+          limit: 20,
+        })
+    )
+    .query(async ({ input, ctx }) => {
+      const { page, limit } = input;
+
+      return await ctx.prisma.ticket.findMany({
+        orderBy: { createdAt: "desc" },
+        take: limit,
+        skip: page * limit,
+      });
+    }),
+
   // getTicketPdfFile: publicProcedure
   //   .input(TicketObject)
   //   .query(({ input, ctx }) => {

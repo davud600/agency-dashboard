@@ -22,6 +22,10 @@ interface TicketsContextType {
   softDeleteTicket: (ticketToDelete: Ticket) => void;
   recoverTicket: (ticketToRecover: Ticket) => void;
   switchTicketPaymentStatus: (ticketToUpdate: Ticket) => void;
+  limit: number;
+  setLimit: Dispatch<SetStateAction<number>>;
+  page: number;
+  setPage: Dispatch<SetStateAction<number>>;
 }
 
 export const TicketsContext = createContext<TicketsContextType>({
@@ -36,6 +40,10 @@ export const TicketsContext = createContext<TicketsContextType>({
   softDeleteTicket: () => false,
   recoverTicket: () => false,
   switchTicketPaymentStatus: () => false,
+  limit: 20,
+  setLimit: () => false,
+  page: 0,
+  setPage: () => false,
 });
 
 export const useTickets = () => {
@@ -43,6 +51,9 @@ export const useTickets = () => {
 };
 
 const TicketsProvider = ({ children }: { children: ReactNode }) => {
+  const [limit, setLimit] = useState<number>(20);
+  const [page, setPage] = useState<number>(0);
+
   const [ticketsList, setTicketsList] = useState<DbTicket[]>([]);
   const [totalNumberOfTickets, setTotalNumberOfTickets] = useState<number>(0);
   const [totalProfits, setTotalProfits] = useState<number>(0);
@@ -51,7 +62,7 @@ const TicketsProvider = ({ children }: { children: ReactNode }) => {
     ticketsList as Ticket[]
   );
 
-  const ticketsQueryData = api.tickets.getAll.useQuery();
+  const ticketsQueryData = api.tickets.getAllLimited.useQuery({ limit, page });
   const profitsQueryData = api.tickets.getTotalProfits.useQuery();
   const numberOfTicketsQueryData =
     api.tickets.getTotalNumberOfTickets.useQuery();
@@ -164,6 +175,10 @@ const TicketsProvider = ({ children }: { children: ReactNode }) => {
     deleteTicket,
     softDeleteTicket,
     recoverTicket,
+    limit,
+    setLimit,
+    page,
+    setPage,
   };
 
   return (

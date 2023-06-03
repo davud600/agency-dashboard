@@ -6,6 +6,7 @@ import {
 } from "~/context/FiltersContext";
 import { useOutsideClickDetector } from "~/utils/outsideClick";
 import { AddTicketBtn } from "./AddTicketComponents";
+import { useTickets } from "~/context/TicketsContext";
 
 const PaymentStatusDropdown = () => {
   const { paymentStatus, setPaymentStatus } = usePaymentStatusFilter();
@@ -179,6 +180,187 @@ const SearchFilter = () => {
   );
 };
 
+const LimitTicketsDropdown = () => {
+  const { limit, setLimit } = useTickets();
+
+  const [dropdownOpen, setDropdownOpen] = useState<boolean>(false);
+  const dropdownRef = useRef<HTMLDivElement>(null);
+
+  useOutsideClickDetector(dropdownRef, () => setDropdownOpen(false));
+
+  return (
+    <div ref={dropdownRef}>
+      <button
+        id="limitTicketsDropdownBtn"
+        onClick={() => setDropdownOpen((prevDropdownOpen) => !prevDropdownOpen)}
+        className="inline-flex items-center rounded-lg border border-gray-300 bg-white px-3 py-1.5 text-sm font-medium text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-4 focus:ring-gray-200"
+      >
+        <svg
+          className="mr-2 h-4 w-4 text-gray-400"
+          aria-hidden="true"
+          fill="currentColor"
+          viewBox="0 0 20 20"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            fillRule="evenodd"
+            d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z"
+            clipRule="evenodd"
+          ></path>
+        </svg>
+        Limit
+        <svg
+          className="ml-2 h-3 w-3"
+          aria-hidden="true"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth="2"
+            d="M19 9l-7 7-7-7"
+          ></path>
+        </svg>
+      </button>
+      <div
+        className="min-h-96 absolute z-10 w-48 divide-y divide-gray-100 rounded-lg bg-white shadow"
+        style={{
+          display: dropdownOpen ? "block" : "none",
+        }}
+      >
+        <ul
+          className="space-y-1 p-3 text-sm text-gray-700"
+          aria-labelledby="limitTicketsDropdownBtn"
+        >
+          <li>
+            <div
+              className="flex items-center rounded p-2 hover:bg-gray-100"
+              onClick={() => {
+                setLimit(20);
+                setDropdownOpen(false);
+              }}
+            >
+              <input
+                id="limit-tickets-0"
+                defaultChecked={limit === 20}
+                type="radio"
+                value="Paid"
+                name="limit-tickets"
+                className="h-4 w-4 border-gray-300 bg-gray-100 text-blue-600 focus:ring-2 focus:ring-blue-500"
+              />
+              <label
+                htmlFor="limit-tickets-0"
+                className="ml-2 w-full rounded text-sm font-medium text-gray-900"
+              >
+                20
+              </label>
+            </div>
+          </li>
+          <li>
+            <div
+              className="flex items-center rounded p-2 hover:bg-gray-100"
+              onClick={() => {
+                setLimit(40);
+                setDropdownOpen(false);
+              }}
+            >
+              <input
+                id="limit-tickets-1"
+                defaultChecked={limit === 40}
+                type="radio"
+                value="Paid"
+                name="limit-tickets"
+                className="h-4 w-4 border-gray-300 bg-gray-100 text-blue-600 focus:ring-2 focus:ring-blue-500"
+              />
+              <label
+                htmlFor="limit-tickets-1"
+                className="ml-2 w-full rounded text-sm font-medium text-gray-900"
+              >
+                40
+              </label>
+            </div>
+          </li>
+          <li>
+            <div
+              className="flex items-center rounded p-2 hover:bg-gray-100"
+              onClick={() => {
+                setLimit(75);
+                setDropdownOpen(false);
+              }}
+            >
+              <input
+                id="limit-tickets-1"
+                defaultChecked={limit === 75}
+                type="radio"
+                value="Paid"
+                name="limit-tickets"
+                className="h-4 w-4 border-gray-300 bg-gray-100 text-blue-600 focus:ring-2 focus:ring-blue-500"
+              />
+              <label
+                htmlFor="limit-tickets-1"
+                className="ml-2 w-full rounded text-sm font-medium text-gray-900"
+              >
+                75
+              </label>
+            </div>
+          </li>
+          <li>
+            <div
+              className="flex items-center rounded p-2 hover:bg-gray-100"
+              onClick={() => {
+                setLimit(125);
+                setDropdownOpen(false);
+              }}
+            >
+              <input
+                id="limit-tickets-1"
+                defaultChecked={limit === 125}
+                type="radio"
+                value="Paid"
+                name="limit-tickets"
+                className="h-4 w-4 border-gray-300 bg-gray-100 text-blue-600 focus:ring-2 focus:ring-blue-500"
+              />
+              <label
+                htmlFor="limit-tickets-1"
+                className="ml-2 w-full rounded text-sm font-medium text-gray-900"
+              >
+                125
+              </label>
+            </div>
+          </li>
+          <li>
+            <div
+              className="flex items-center rounded p-2 hover:bg-gray-100"
+              onClick={() => {
+                setLimit(250);
+                setDropdownOpen(false);
+              }}
+            >
+              <input
+                id="limit-tickets-1"
+                defaultChecked={limit === 250}
+                type="radio"
+                value="Paid"
+                name="limit-tickets"
+                className="h-4 w-4 border-gray-300 bg-gray-100 text-blue-600 focus:ring-2 focus:ring-blue-500"
+              />
+              <label
+                htmlFor="limit-tickets-1"
+                className="ml-2 w-full rounded text-sm font-medium text-gray-900"
+              >
+                250
+              </label>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+  );
+};
+
 const Filters = () => {
   const { isViewingDeletedTickets, setIsViewingDeletedTickets } =
     useDeletedFilter();
@@ -188,6 +370,9 @@ const Filters = () => {
       <div className="flex items-center justify-start gap-3">
         {/* Payment Status Filter */}
         <PaymentStatusDropdown />
+
+        {/* Not technicially a filter in this project's context because it's state is defined in TicketsContext */}
+        <LimitTicketsDropdown />
 
         {/* View Deleted Tickets */}
         {isViewingDeletedTickets ? (

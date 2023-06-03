@@ -1,6 +1,7 @@
 import { type NextPage } from "next";
 import Head from "next/head";
 import Filters from "~/components/home/Filters";
+import PageBtns from "~/components/home/PageBtns";
 import TicketsTable from "~/components/home/TicketsTable";
 import TopInfo from "~/components/home/TopInfo";
 
@@ -23,6 +24,9 @@ const Home: NextPage = () => {
 
           {/* Tickets Table */}
           <TicketsTable />
+
+          {/* Page btns */}
+          <PageBtns />
         </div>
       </main>
     </>
