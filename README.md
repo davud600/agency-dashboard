@@ -15,4 +15,5 @@
   the limit should be able to be changed from the front-end with a filter (which would work a little different from the other filters since it has to make db queries and not change the client side list) (DONE)
 
 - auth
+- delete all button for deleted tickets
 - option to download the whole db locally from site (export to excel file)
