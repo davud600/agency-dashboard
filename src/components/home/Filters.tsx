@@ -282,7 +282,7 @@ const LimitTicketsDropdown = () => {
               }}
             >
               <input
-                id="limit-tickets-1"
+                id="limit-tickets-2"
                 defaultChecked={limit === 75}
                 type="radio"
                 value="Paid"
@@ -290,7 +290,7 @@ const LimitTicketsDropdown = () => {
                 className="h-4 w-4 border-gray-300 bg-gray-100 text-blue-600 focus:ring-2 focus:ring-blue-500"
               />
               <label
-                htmlFor="limit-tickets-1"
+                htmlFor="limit-tickets-2"
                 className="ml-2 w-full rounded text-sm font-medium text-gray-900"
               >
                 75
@@ -306,7 +306,7 @@ const LimitTicketsDropdown = () => {
               }}
             >
               <input
-                id="limit-tickets-1"
+                id="limit-tickets-3"
                 defaultChecked={limit === 200}
                 type="radio"
                 value="Paid"
@@ -314,7 +314,7 @@ const LimitTicketsDropdown = () => {
                 className="h-4 w-4 border-gray-300 bg-gray-100 text-blue-600 focus:ring-2 focus:ring-blue-500"
               />
               <label
-                htmlFor="limit-tickets-1"
+                htmlFor="limit-tickets-3"
                 className="ml-2 w-full rounded text-sm font-medium text-gray-900"
               >
                 200
@@ -330,7 +330,7 @@ const LimitTicketsDropdown = () => {
               }}
             >
               <input
-                id="limit-tickets-1"
+                id="limit-tickets-4"
                 defaultChecked={limit === totalNumberOfTickets}
                 type="radio"
                 value="Paid"
@@ -338,7 +338,7 @@ const LimitTicketsDropdown = () => {
                 className="h-4 w-4 border-gray-300 bg-gray-100 text-blue-600 focus:ring-2 focus:ring-blue-500"
               />
               <label
-                htmlFor="limit-tickets-1"
+                htmlFor="limit-tickets-4"
                 className="ml-2 w-full rounded text-sm font-medium text-gray-900"
               >
                 All

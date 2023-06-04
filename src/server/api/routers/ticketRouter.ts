@@ -44,19 +44,6 @@ export const ticketRouter = createTRPCRouter({
       });
     }),
 
-  // getTicketPdfFile: publicProcedure
-  //   .input(TicketObject)
-  //   .query(({ input, ctx }) => {
-  //     return ctx.prisma.ticket.findFirst({
-  //       select: {
-  //         pdfFile: true,
-  //       },
-  //       where: {
-  //         bookingNum: input.bookingNum,
-  //       },
-  //     });
-  //   }),
-
   create: publicProcedure
     .input(TicketObject)
     .mutation(async ({ input, ctx }) => {
@@ -100,12 +87,16 @@ export const ticketRouter = createTRPCRouter({
 
   getTotalProfits: publicProcedure.query(async ({ ctx }) => {
     const totalProfitPrice: { totalSum: number }[] = await ctx.prisma
-      .$queryRaw`SELECT SUM(profitPrice) AS totalSum FROM Ticket`;
+      .$queryRaw`SELECT SUM(profitPrice) AS totalSum FROM Ticket WHERE deleted = false`;
 
     return totalProfitPrice[0]?.totalSum;
   }),
 
   getTotalNumberOfTickets: publicProcedure.query(async ({ ctx }) => {
-    return await ctx.prisma.ticket.count();
+    return await ctx.prisma.ticket.count({
+      where: {
+        deleted: false,
+      },
+    });
   }),
 });

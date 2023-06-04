@@ -62,6 +62,8 @@ const TicketsProvider = ({ children }: { children: ReactNode }) => {
     ticketsList as Ticket[]
   );
 
+  console.log({ filteredTickets });
+
   const ticketsQueryData = api.tickets.getAllLimited.useQuery({ limit, page });
   const profitsQueryData = api.tickets.getTotalProfits.useQuery();
   const numberOfTicketsQueryData =
@@ -72,7 +74,7 @@ const TicketsProvider = ({ children }: { children: ReactNode }) => {
       await ticketsQueryData.refetch();
       await profitsQueryData.refetch();
       await numberOfTicketsQueryData.refetch();
-      setFilteredTicketsList(ticketsList);
+      // setFilteredTicketsList(ticketsList);
     },
   });
 
