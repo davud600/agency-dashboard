@@ -37,13 +37,9 @@ export const TicketsList = ({ filteredTickets }: TicketsListProps) => {
               fontWeight: ticket.paymentStatus === "Paid" ? 500 : "normal",
             }}
           >
-            {ticket.paymentStatus}{" "}
-            {!!ticket.paymentMemo && (
-              <span className="text-sm text-gray-800">
-                ({ticket.paymentMemo})
-              </span>
-            )}
+            {ticket.paymentStatus}
           </td>
+          <td className="p-2 text-sm text-gray-800">{ticket.paymentMemo}</td>
           <td className="flex gap-2 p-2 md:gap-4">
             <SwitchPaymentStatusBtn ticket={ticket} />
             <EditTicketBtn ticket={ticket} />
