@@ -5,6 +5,7 @@ import { SwitchPaymentStatusBtn } from "./SwitchPaymentStatusComponents";
 import { ShowAmadeusBtn } from "./ShowAmadeusComponents";
 import { RecoverTicketBtn } from "./RecoverTicketComponents";
 import { ShowPdfFileBtn } from "./ShowPdfFileBtn";
+import { AddPaymentStatusMemoBtn } from "./AddPaymentStatusMemo";
 
 export interface TicketsListProps {
   filteredTickets: Ticket[];
@@ -42,6 +43,7 @@ export const TicketsList = ({ filteredTickets }: TicketsListProps) => {
           <td className="p-2 text-sm text-gray-800">{ticket.paymentMemo}</td>
           <td className="flex gap-2 p-2 md:gap-4">
             <SwitchPaymentStatusBtn ticket={ticket} />
+            <AddPaymentStatusMemoBtn ticket={ticket} />
             <EditTicketBtn ticket={ticket} />
             <ShowAmadeusBtn ticket={ticket} />
             <ShowPdfFileBtn ticket={ticket} />
