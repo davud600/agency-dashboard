@@ -1,13 +1,6 @@
-import {
-  type Dispatch,
-  type SetStateAction,
-  useRef,
-  useState,
-  type FormEvent,
-  type ChangeEvent,
-} from "react";
+import { type Dispatch, type SetStateAction, useRef, useState } from "react";
 import { useTickets } from "~/context/TicketsContext";
-import { type TicketPaymentStatus, type Ticket } from "~/interfaces/ticket";
+import { type Ticket } from "~/interfaces/ticket";
 import { useOutsideClickDetector } from "~/utils/outsideClick";
 
 interface DeleteAllTicketsProps {

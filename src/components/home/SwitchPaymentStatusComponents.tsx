@@ -67,11 +67,11 @@ const SwitchTicketPaymentStatusPortal = ({
           onClick={confirmUpdateStatusBtnHandler}
           className="rounded-sm bg-blue-600 px-12 py-3 text-lg text-white transition-all hover:bg-blue-800"
         >
-          Switch to '
+          Switch to &apos;
           <span className="font-medium">
             {ticket.paymentStatus === "Paid" ? "Not Paid" : "Paid"}
           </span>
-          '
+          &apos;
         </button>
         <button
           onClick={cancelUpdateStatusBtnHandler}
