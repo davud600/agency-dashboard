@@ -1,4 +1,4 @@
-import { type Ticket } from "~/interfaces/ticket";
+import { type DbTicket } from "~/interfaces/ticket";
 import { DeleteTicketBtn } from "./DeleteTicketComponents";
 import { EditTicketBtn } from "./EditTicketComponents";
 import { SwitchPaymentStatusBtn } from "./SwitchPaymentStatusComponents";
@@ -8,7 +8,7 @@ import { ShowPdfFileBtn } from "./ShowPdfFileBtn";
 import { AddPaymentStatusMemoBtn } from "./AddPaymentStatusMemo";
 
 export interface TicketsListProps {
-  filteredTickets: Ticket[];
+  filteredTickets: DbTicket[];
 }
 
 export const TicketsList = ({ filteredTickets }: TicketsListProps) => {
@@ -16,7 +16,7 @@ export const TicketsList = ({ filteredTickets }: TicketsListProps) => {
 
   return (
     <>
-      {filteredTickets.map((ticket: Ticket) => (
+      {filteredTickets.map((ticket: DbTicket) => (
         <tr
           key={ticket.bookingNum}
           className="border-b bg-white hover:bg-gray-50"
@@ -41,6 +41,12 @@ export const TicketsList = ({ filteredTickets }: TicketsListProps) => {
             {ticket.paymentStatus}
           </td>
           <td className="p-2 text-sm text-gray-800">{ticket.paymentMemo}</td>
+          <td className="p-2 text-sm text-gray-800">
+            {ticket.createdAt.toLocaleString("en-GB")}
+          </td>
+          <td className="p-2 text-sm text-gray-800">
+            {ticket.updatedAt?.toLocaleString("en-GB")}
+          </td>
           <td className="flex gap-2 p-2 md:gap-4">
             <SwitchPaymentStatusBtn ticket={ticket} />
             <AddPaymentStatusMemoBtn ticket={ticket} />
