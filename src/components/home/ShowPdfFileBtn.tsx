@@ -1,6 +1,4 @@
-import { useTickets } from "~/context/TicketsContext";
 import { type Ticket } from "~/interfaces/ticket";
-import { api } from "~/utils/api";
 
 interface ShowPdfFileBtnProps {
   ticket: Ticket;

@@ -7,7 +7,7 @@ import {
   type SetStateAction,
   useEffect,
 } from "react";
-import { type Ticket } from "~/interfaces/ticket";
+import { DbTicket, type Ticket } from "~/interfaces/ticket";
 import { useTickets } from "./TicketsContext";
 
 /**
@@ -72,7 +72,7 @@ const FiltersProvider = ({ children }: { children: ReactNode }) => {
   const [isViewingDeletedTickets, setIsViewingDeletedTickets] = useState(false);
   const [paymentStatus, setPaymentStatus] = useState("");
 
-  const getFilteredTicketsBySearch = (ticketsList: Ticket[]) => {
+  const getFilteredTicketsBySearch = (ticketsList: DbTicket[]) => {
     let filteredTicketsList = [...ticketsList];
 
     if (searchQuery) {
@@ -92,7 +92,7 @@ const FiltersProvider = ({ children }: { children: ReactNode }) => {
     return filteredTicketsList;
   };
 
-  const getFilteredByDeleteTickets = (ticketsList: Ticket[]) => {
+  const getFilteredByDeleteTickets = (ticketsList: DbTicket[]) => {
     let filteredTicketsList = [...ticketsList];
 
     filteredTicketsList = filteredTicketsList.filter(
@@ -102,7 +102,7 @@ const FiltersProvider = ({ children }: { children: ReactNode }) => {
     return filteredTicketsList;
   };
 
-  const getFilteredTicketsByPaymentStatus = (ticketsList: Ticket[]) => {
+  const getFilteredTicketsByPaymentStatus = (ticketsList: DbTicket[]) => {
     let filteredTicketsList = [...ticketsList];
 
     if (paymentStatus) {
@@ -114,7 +114,7 @@ const FiltersProvider = ({ children }: { children: ReactNode }) => {
     return filteredTicketsList;
   };
 
-  const filterTickets = (ticketsList: Ticket[]) => {
+  const filterTickets = (ticketsList: DbTicket[]) => {
     setFilteredTicketsList(
       getFilteredTicketsByPaymentStatus(
         getFilteredByDeleteTickets(getFilteredTicketsBySearch(ticketsList))

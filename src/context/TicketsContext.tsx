@@ -11,11 +11,11 @@ import { type DbTicket, type Ticket } from "~/interfaces/ticket";
 import { api } from "~/utils/api";
 
 interface TicketsContextType {
-  ticketsList: Ticket[];
+  ticketsList: DbTicket[];
   totalNumberOfTickets: number;
-  filteredTickets: Ticket[];
+  filteredTickets: DbTicket[];
   totalProfits: number;
-  setFilteredTicketsList: Dispatch<SetStateAction<Ticket[]>>;
+  setFilteredTicketsList: Dispatch<SetStateAction<DbTicket[]>>;
   createTicket: (ticketData: Ticket) => void;
   updateTicket: (ticketToUpdate: Ticket, ticketData: Ticket) => void;
   deleteTicket: (ticketToDelete: Ticket) => void;
@@ -58,11 +58,8 @@ const TicketsProvider = ({ children }: { children: ReactNode }) => {
   const [totalNumberOfTickets, setTotalNumberOfTickets] = useState<number>(0);
   const [totalProfits, setTotalProfits] = useState<number>(0);
 
-  const [filteredTickets, setFilteredTicketsList] = useState<Ticket[]>(
-    ticketsList as Ticket[]
-  );
-
-  console.log({ filteredTickets });
+  const [filteredTickets, setFilteredTicketsList] =
+    useState<DbTicket[]>(ticketsList);
 
   const ticketsQueryData = api.tickets.getAllLimited.useQuery({ limit, page });
   const profitsQueryData = api.tickets.getTotalProfits.useQuery();

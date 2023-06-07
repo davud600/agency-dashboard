@@ -7,6 +7,7 @@ import {
 import { useOutsideClickDetector } from "~/utils/outsideClick";
 import { AddTicketBtn } from "./AddTicketComponents";
 import { useTickets } from "~/context/TicketsContext";
+import { DeleteAllTicketsBtn } from "./DeleteAllTicketsBtn";
 
 const PaymentStatusDropdown = () => {
   const { paymentStatus, setPaymentStatus } = usePaymentStatusFilter();
@@ -388,6 +389,9 @@ const Filters = () => {
 
         {/* Add new Ticket button */}
         <AddTicketBtn />
+
+        {/* Delete all tickets button */}
+        {isViewingDeletedTickets && <DeleteAllTicketsBtn />}
       </div>
     </div>
   );

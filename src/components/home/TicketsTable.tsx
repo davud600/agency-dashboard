@@ -27,6 +27,15 @@ const TicketsTable = () => {
             Payment Status
           </th>
           <th scope="col" className="p-2">
+            Payment Memo
+          </th>
+          <th scope="col" className="p-2">
+            Date Created
+          </th>
+          <th scope="col" className="p-2">
+            Date Last Updated
+          </th>
+          <th scope="col" className="p-2">
             Action
           </th>
         </tr>

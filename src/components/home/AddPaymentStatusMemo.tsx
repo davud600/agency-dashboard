@@ -1,24 +1,35 @@
-import { type Dispatch, type SetStateAction, useRef, useState } from "react";
+import {
+  type Dispatch,
+  type SetStateAction,
+  useRef,
+  useState,
+  type FormEvent,
+  type ChangeEvent,
+} from "react";
 import { useTickets } from "~/context/TicketsContext";
 import { type Ticket } from "~/interfaces/ticket";
 import { useOutsideClickDetector } from "~/utils/outsideClick";
 
-interface SwitchTicketPaymentStatusPortalProps {
+interface AddPaymentStatusMemoPortalProps {
   closePortal: Dispatch<SetStateAction<undefined>>;
   ticket: Ticket;
 }
 
-const SwitchTicketPaymentStatusPortal = ({
+const AddPaymentStatusMemoPortal = ({
   closePortal,
   ticket,
-}: SwitchTicketPaymentStatusPortalProps) => {
+}: AddPaymentStatusMemoPortalProps) => {
   const { updateTicket } = useTickets();
+
+  const [paymentMemo, setPaymentMemo] = useState<string>("");
 
   const portalRef = useRef<HTMLDivElement>(null);
 
   useOutsideClickDetector(portalRef, closePortal);
 
-  const confirmUpdateStatusBtnHandler = () => {
+  const submitHandler = (e: FormEvent) => {
+    e.preventDefault();
+
     updateTicket(
       {
         ...ticket,
@@ -27,13 +38,9 @@ const SwitchTicketPaymentStatusPortal = ({
       {
         ...ticket,
         bookingNum: Number(ticket.bookingNum),
-        paymentStatus: ticket.paymentStatus === "Paid" ? "Not Paid" : "Paid",
+        paymentMemo,
       }
     );
-    closePortal(undefined);
-  };
-
-  const cancelUpdateStatusBtnHandler = () => {
     closePortal(undefined);
   };
 
@@ -62,46 +69,55 @@ const SwitchTicketPaymentStatusPortal = ({
           {ticket.bookingNum.toString()}
         </h1>
       </div>
-      <div className="flex h-full w-full items-center justify-center gap-4">
+      <form
+        onSubmit={submitHandler}
+        className="flex h-full w-full flex-col justify-between"
+      >
+        <div className="w-full">
+          <div className="mb-3 flex w-full justify-start gap-2">
+            <div className="w-full">
+              <label
+                htmlFor="paymentMemo"
+                className="mb-2 block text-sm font-medium text-gray-600"
+              >
+                Payment Memo
+              </label>
+              <input
+                type="text"
+                id="paymentMemo"
+                className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-600 focus:border-blue-500 focus:ring-blue-500"
+                value={paymentMemo}
+                onChange={(e: ChangeEvent<HTMLInputElement>) =>
+                  setPaymentMemo(e.target.value)
+                }
+              />
+            </div>
+          </div>
+        </div>
         <button
-          onClick={confirmUpdateStatusBtnHandler}
-          className="rounded-sm bg-blue-600 px-12 py-3 text-lg text-white transition-all hover:bg-blue-800"
+          type="submit"
+          className="w-full rounded-lg bg-blue-700 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300"
         >
-          Switch to &apos;
-          <span className="font-medium">
-            {ticket.paymentStatus === "Paid" ? "Not Paid" : "Paid"}
-          </span>
-          &apos;
+          Add Payment Status Memo
         </button>
-        <button
-          onClick={cancelUpdateStatusBtnHandler}
-          className="rounded-sm bg-gray-600 px-12 py-3 text-lg text-white transition-all hover:bg-gray-800"
-        >
-          Cancel
-        </button>
-      </div>
+      </form>
     </div>
   );
 };
 
-interface SwitchPaymentStatusBtnProps {
+interface AddPaymentStatusMemoBtnProps {
   ticket: Ticket;
 }
 
-export const SwitchPaymentStatusBtn = ({
+export const AddPaymentStatusMemoBtn = ({
   ticket,
-}: SwitchPaymentStatusBtnProps) => {
+}: AddPaymentStatusMemoBtnProps) => {
   const [portalOpen, setPortalOpen] = useState<boolean>(false);
-
-  const svgClassList =
-    ticket.paymentStatus === "Paid"
-      ? "h-8 w-8 fill-green-600 transition-all hover:fill-green-700"
-      : "h-8 w-8 fill-gray-600 transition-all hover:fill-gray-700";
 
   return (
     <>
       {portalOpen && (
-        <SwitchTicketPaymentStatusPortal
+        <AddPaymentStatusMemoPortal
           closePortal={() => setPortalOpen(false)}
           ticket={ticket}
         />
@@ -112,11 +128,12 @@ export const SwitchPaymentStatusBtn = ({
         className="flex items-center justify-center font-medium text-blue-600 hover:underline"
       >
         <svg
-          className={svgClassList}
+          className="h-7 w-7 fill-yellow-600 transition-all hover:fill-yellow-700"
           xmlns="http://www.w3.org/2000/svg"
-          viewBox="0 0 576 512"
+          height="1em"
+          viewBox="0 0 512 512"
         >
-          <path d="M64 64C28.7 64 0 92.7 0 128V384c0 35.3 28.7 64 64 64H512c35.3 0 64-28.7 64-64V128c0-35.3-28.7-64-64-64H64zM272 192H496c8.8 0 16 7.2 16 16s-7.2 16-16 16H272c-8.8 0-16-7.2-16-16s7.2-16 16-16zM256 304c0-8.8 7.2-16 16-16H496c8.8 0 16 7.2 16 16s-7.2 16-16 16H272c-8.8 0-16-7.2-16-16zM164 152v13.9c7.5 1.2 14.6 2.9 21.1 4.7c10.7 2.8 17 13.8 14.2 24.5s-13.8 17-24.5 14.2c-11-2.9-21.6-5-31.2-5.2c-7.9-.1-16 1.8-21.5 5c-4.8 2.8-6.2 5.6-6.2 9.3c0 1.8 .1 3.5 5.3 6.7c6.3 3.8 15.5 6.7 28.3 10.5l.7 .2c11.2 3.4 25.6 7.7 37.1 15c12.9 8.1 24.3 21.3 24.6 41.6c.3 20.9-10.5 36.1-24.8 45c-7.2 4.5-15.2 7.3-23.2 9V360c0 11-9 20-20 20s-20-9-20-20V345.4c-10.3-2.2-20-5.5-28.2-8.4l0 0 0 0c-2.1-.7-4.1-1.4-6.1-2.1c-10.5-3.5-16.1-14.8-12.6-25.3s14.8-16.1 25.3-12.6c2.5 .8 4.9 1.7 7.2 2.4c13.6 4.6 24 8.1 35.1 8.5c8.6 .3 16.5-1.6 21.4-4.7c4.1-2.5 6-5.5 5.9-10.5c0-2.9-.8-5-5.9-8.2c-6.3-4-15.4-6.9-28-10.7l-1.7-.5c-10.9-3.3-24.6-7.4-35.6-14c-12.7-7.7-24.6-20.5-24.7-40.7c-.1-21.1 11.8-35.7 25.8-43.9c6.9-4.1 14.5-6.8 22.2-8.5V152c0-11 9-20 20-20s20 9 20 20z" />
+          <path d="M256 448c141.4 0 256-93.1 256-208S397.4 32 256 32S0 125.1 0 240c0 45.1 17.7 86.8 47.7 120.9c-1.9 24.5-11.4 46.3-21.4 62.9c-5.5 9.2-11.1 16.6-15.2 21.6c-2.1 2.5-3.7 4.4-4.9 5.7c-.6 .6-1 1.1-1.3 1.4l-.3 .3 0 0 0 0 0 0 0 0c-4.6 4.6-5.9 11.4-3.4 17.4c2.5 6 8.3 9.9 14.8 9.9c28.7 0 57.6-8.9 81.6-19.3c22.9-10 42.4-21.9 54.3-30.6c31.8 11.5 67 17.9 104.1 17.9zM224 160c0-8.8 7.2-16 16-16h32c8.8 0 16 7.2 16 16v48h48c8.8 0 16 7.2 16 16v32c0 8.8-7.2 16-16 16H288v48c0 8.8-7.2 16-16 16H240c-8.8 0-16-7.2-16-16V272H176c-8.8 0-16-7.2-16-16V224c0-8.8 7.2-16 16-16h48V160z" />
         </svg>
       </button>
     </>

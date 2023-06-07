@@ -16,4 +16,6 @@ export interface Ticket {
 
 export interface DbTicket extends Ticket {
   id: string;
+  createdAt: Date;
+  updatedAt?: Date;
 }
