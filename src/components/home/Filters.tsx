@@ -357,7 +357,7 @@ const Filters = () => {
     useDeletedFilter();
 
   return (
-    <div className="flex items-center justify-between gap-1 pb-4">
+    <div className="flex w-full items-center justify-between gap-1 pb-4">
       <div className="flex items-center justify-start gap-1">
         {/* Payment Status Filter */}
         <PaymentStatusDropdown />
