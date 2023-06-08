@@ -40,7 +40,7 @@ const SwitchTicketPaymentStatusPortal = ({
   return (
     <div
       ref={portalRef}
-      className="absolute left-1/2 top-1/2 z-20 -ml-[21rem] -mt-[18rem] flex h-[36rem] w-[42rem] flex-col rounded-lg border border-gray-300 bg-white p-3 shadow-[0_0_0_1000px_rgba(0,0,0,.3)]"
+      className="absolute left-[100%] top-1/2 z-20 -ml-[21rem] -mt-[18rem] flex h-[36rem] w-[42rem] flex-col rounded-lg border border-gray-300 bg-white p-3 shadow-[0_0_0_1000px_rgba(0,0,0,.3)] md:left-1/2"
     >
       <div className="flex h-fit w-full justify-start">
         <button
