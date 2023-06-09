@@ -1,9 +1,12 @@
 import { type ChangeEvent, useState, type FormEvent } from "react";
+import { api } from "~/utils/api";
 
 interface LoginCredentials {
   username: string;
   password: string;
 }
+
+type LoginResStatus = "success" | "incorrect credentials";
 
 const LoginPage = () => {
   const [formData, setFormData] = useState<LoginCredentials>({
@@ -11,8 +14,22 @@ const LoginPage = () => {
     password: "",
   });
 
+  const loginQuery = api.admin.login.useQuery({
+    user: formData.username,
+    password: formData.password,
+  });
+
   const submitHandler = (e: FormEvent) => {
     e.preventDefault();
+
+    const loginRes = loginQuery.data as { status: LoginResStatus };
+
+    if (!!!loginRes) return;
+
+    if (loginRes.status === "success") {
+      window.location.replace("/");
+      return;
+    }
   };
 
   return (
