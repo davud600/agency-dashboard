@@ -22,12 +22,17 @@ const LoginPage = () => {
   const submitHandler = (e: FormEvent) => {
     e.preventDefault();
 
-    const loginRes = loginQuery.data as { status: LoginResStatus };
+    const loginRes = loginQuery.data as {
+      status: LoginResStatus;
+      token: string;
+    };
 
     if (!!!loginRes) return;
 
     if (loginRes.status === "success") {
-      window.location.replace("/");
+      console.log(loginRes.token);
+
+      // window.location.replace("/");
       return;
     }
   };

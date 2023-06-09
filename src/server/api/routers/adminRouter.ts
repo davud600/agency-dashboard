@@ -8,17 +8,26 @@ const AdminCredentials = z.object({
 });
 
 export const adminRouter = createTRPCRouter({
-  login: publicProcedure.input(AdminCredentials).query(async ({ input }) => {
-    const { user, password } = input;
+  login: publicProcedure
+    .input(AdminCredentials)
+    .query(async ({ input, ctx }) => {
+      const { user, password } = input;
 
-    if (user !== env.ADMIN_USER || password !== env.ADMIN_PASSWORD) {
+      if (user !== env.ADMIN_USER || password !== env.ADMIN_PASSWORD) {
+        return {
+          status: "incorrect credentials",
+        };
+      }
+
+      const session = await ctx.prisma.adminSession.create({
+        data: {
+          expires: new Date(Date.now() + 1 * 60 * 60 * 1000),
+        },
+      });
+
       return {
-        status: "incorrect credentials",
+        status: "success",
+        token: session.id,
       };
-    }
-
-    return {
-      status: "success",
-    };
-  }),
+    }),
 });
