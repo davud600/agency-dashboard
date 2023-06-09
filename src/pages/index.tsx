@@ -10,7 +10,7 @@ const Home: NextPage = () => {
   return (
     <>
       <Head>
-        <title>Agency Dashboard</title>
+        <title>Venera Tours</title>
         <meta name="description" content="Agency dashboard" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
