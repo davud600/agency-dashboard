@@ -1,3 +1,5 @@
+# DON'T FORGET! DATABASE TIMEZONE IS 2 HOURS BEHIND :)
+
 # To Do
 
 - work on mobile responsiveness (maybe)
