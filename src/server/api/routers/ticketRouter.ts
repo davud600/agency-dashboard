@@ -51,37 +51,44 @@ export const ticketRouter = createTRPCRouter({
     }),
 
   update: publicProcedure
-    .input(z.object({ ticketToUpdate: TicketObject, ticketData: TicketObject }))
-    .mutation(async ({ input: { ticketToUpdate, ticketData }, ctx }) => {
-      await ctx.prisma.ticket.update({
-        where: { bookingNum: ticketToUpdate.bookingNum },
-        data: ticketData,
-      });
-    }),
+    .input(
+      z.object({
+        ticketToUpdateBookingNum: z.string(),
+        ticketData: TicketObject,
+      })
+    )
+    .mutation(
+      async ({ input: { ticketToUpdateBookingNum, ticketData }, ctx }) => {
+        await ctx.prisma.ticket.update({
+          where: { bookingNum: ticketToUpdateBookingNum },
+          data: ticketData,
+        });
+      }
+    ),
 
   delete: publicProcedure
-    .input(z.object({ ticketToDelete: TicketObject }))
-    .mutation(async ({ input: { ticketToDelete }, ctx }) => {
+    .input(z.object({ ticketToDeleteBookingNum: z.string() }))
+    .mutation(async ({ input: { ticketToDeleteBookingNum }, ctx }) => {
       await ctx.prisma.ticket.delete({
-        where: { bookingNum: ticketToDelete.bookingNum },
+        where: { bookingNum: ticketToDeleteBookingNum },
       });
     }),
 
   softDelete: publicProcedure
-    .input(z.object({ ticketToDelete: TicketObject }))
-    .mutation(async ({ input: { ticketToDelete }, ctx }) => {
+    .input(z.object({ ticketToDeleteBookingNum: z.string() }))
+    .mutation(async ({ input: { ticketToDeleteBookingNum }, ctx }) => {
       await ctx.prisma.ticket.update({
-        where: { bookingNum: ticketToDelete.bookingNum },
-        data: { ...ticketToDelete, deleted: true },
+        where: { bookingNum: ticketToDeleteBookingNum },
+        data: { deleted: true },
       });
     }),
 
   recover: publicProcedure
-    .input(z.object({ ticketToRecover: TicketObject }))
-    .mutation(async ({ input: { ticketToRecover }, ctx }) => {
+    .input(z.object({ ticketToRecoverBookingNum: z.string() }))
+    .mutation(async ({ input: { ticketToRecoverBookingNum }, ctx }) => {
       await ctx.prisma.ticket.update({
-        where: { bookingNum: ticketToRecover.bookingNum },
-        data: { ...ticketToRecover, deleted: false },
+        where: { bookingNum: ticketToRecoverBookingNum },
+        data: { deleted: false },
       });
     }),
 

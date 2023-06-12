@@ -136,24 +136,33 @@ const TicketsProvider = ({ children }: { children: ReactNode }) => {
   };
 
   const updateTicket = (ticketToUpdate: Ticket, ticketData: Ticket) => {
-    ticketsUpdateMutation.mutate({ ticketToUpdate, ticketData });
+    ticketsUpdateMutation.mutate({
+      ticketToUpdateBookingNum: ticketToUpdate.bookingNum,
+      ticketData,
+    });
   };
 
   const deleteTicket = (ticketToDelete: Ticket) => {
-    ticketsDeleteMutation.mutate({ ticketToDelete });
+    ticketsDeleteMutation.mutate({
+      ticketToDeleteBookingNum: ticketToDelete.bookingNum,
+    });
   };
 
   const softDeleteTicket = (ticketToDelete: Ticket) => {
-    ticketsSoftDeleteMutation.mutate({ ticketToDelete });
+    ticketsSoftDeleteMutation.mutate({
+      ticketToDeleteBookingNum: ticketToDelete.bookingNum,
+    });
   };
 
   const recoverTicket = (ticketToRecover: Ticket) => {
-    ticketsRecoverMutation.mutate({ ticketToRecover });
+    ticketsRecoverMutation.mutate({
+      ticketToRecoverBookingNum: ticketToRecover.bookingNum,
+    });
   };
 
   const switchTicketPaymentStatus = (ticketToUpdate: Ticket) => {
     ticketsUpdateMutation.mutate({
-      ticketToUpdate,
+      ticketToUpdateBookingNum: ticketToUpdate.bookingNum,
       ticketData: {
         ...ticketToUpdate,
         paymentStatus:
