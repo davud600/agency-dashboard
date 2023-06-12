@@ -16,8 +16,7 @@ const DeleteAllTickets = ({ closePortal }: DeleteAllTicketsProps) => {
 
   const confirmDeleteBtnHandler = () => {
     ticketsList.forEach((ticket: Ticket) => {
-      if (ticket.deleted)
-        deleteTicket({ ...ticket, bookingNum: Number(ticket.bookingNum) });
+      if (ticket.deleted) deleteTicket({ ...ticket });
     });
     closePortal(undefined);
   };

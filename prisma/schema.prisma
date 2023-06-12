@@ -65,7 +65,7 @@ model AdminSession {
 // Agency
 model Ticket {
     id String @id @default(cuid())
-    bookingNum BigInt @db.UnsignedBigInt @unique
+    bookingNum String @unique
     firstName String
     lastName String
     phoneNumber String

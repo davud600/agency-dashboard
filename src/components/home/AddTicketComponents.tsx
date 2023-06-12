@@ -19,7 +19,7 @@ const AddTicketPortal = ({ closePortal }: AddTicketPortalProps) => {
 
   // Input state
   const [formData, setFormData] = useState<Ticket>({
-    bookingNum: 0,
+    bookingNum: "",
     firstName: "",
     lastName: "",
     phoneNumber: "",
@@ -104,18 +104,17 @@ const AddTicketPortal = ({ closePortal }: AddTicketPortalProps) => {
                 Ticket Booking Number
               </label>
               <input
-                type="number"
+                type="text"
                 id="bookingNum"
                 className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-600 focus:border-blue-500 focus:ring-blue-500"
-                placeholder="12345678"
-                min={0}
+                placeholder="Booking Number"
                 required
                 value={formData.bookingNum}
                 onChange={(e: ChangeEvent<HTMLInputElement>) =>
                   setFormData((prevFormData) => {
                     return {
                       ...prevFormData,
-                      bookingNum: parseFloat(e.target.value),
+                      bookingNum: e.target.value,
                     };
                   })
                 }

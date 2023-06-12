@@ -2,7 +2,7 @@ import { z } from "zod";
 import { createTRPCRouter, publicProcedure } from "~/server/api/trpc";
 
 const TicketObject = z.object({
-  bookingNum: z.number(),
+  bookingNum: z.string(),
   firstName: z.string(),
   lastName: z.string(),
   phoneNumber: z.string(),

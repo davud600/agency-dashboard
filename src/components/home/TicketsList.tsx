@@ -21,7 +21,7 @@ export const TicketsList = ({ filteredTickets }: TicketsListProps) => {
           key={ticket.bookingNum}
           className="border-b bg-white hover:bg-gray-50"
         >
-          <th className="p-2">{ticket.bookingNum.toString()}</th>
+          <th className="p-2">{ticket.bookingNum}</th>
           <td
             scope="row"
             className="whitespace-nowrap p-2 font-medium text-gray-900"

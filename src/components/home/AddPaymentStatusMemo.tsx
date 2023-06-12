@@ -33,11 +33,9 @@ const AddPaymentStatusMemoPortal = ({
     updateTicket(
       {
         ...ticket,
-        bookingNum: Number(ticket.bookingNum),
       },
       {
         ...ticket,
-        bookingNum: Number(ticket.bookingNum),
         paymentMemo,
       }
     );

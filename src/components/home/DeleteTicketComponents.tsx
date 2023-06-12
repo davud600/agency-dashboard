@@ -82,7 +82,7 @@ export const DeleteTicketBtn = ({ ticket }: DeleteTicketBtnProps) => {
       {portalOpen && (
         <DeleteTicketPortal
           closePortal={() => setPortalOpen(false)}
-          ticket={{ ...ticket, bookingNum: Number(ticket.bookingNum) }}
+          ticket={{ ...ticket }}
         />
       )}
 
