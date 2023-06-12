@@ -27,9 +27,13 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
     };
   }
 
+  const adminSessionObj = JSON.parse(adminSession) as unknown as {
+    token: string;
+  };
+
   const sess = await prisma.adminSession.findFirst({
     where: {
-      id: JSON.parse(adminSession).token,
+      id: adminSessionObj.token,
     },
   });
 

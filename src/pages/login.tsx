@@ -9,7 +9,7 @@ interface LoginCredentials {
 }
 
 const LoginPage = () => {
-  const { authorizeClient, adminSession } = useAdmin();
+  const { authorizeClient } = useAdmin();
 
   const [formData, setFormData] = useState<LoginCredentials>({
     username: "",

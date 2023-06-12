@@ -1,5 +1,5 @@
 import { createContext, type ReactNode, useContext, useState } from "react";
-import { AdminSession } from "~/interfaces/admin";
+import { type AdminSession } from "~/interfaces/admin";
 import Cookies from "js-cookie";
 
 interface AdminContext {
@@ -12,7 +12,7 @@ export const AdminContext = createContext<AdminContext>({
   adminSession: {
     token: "",
   },
-  authorizeClient: ({ adminSession }) => {
+  authorizeClient: () => {
     return;
   },
   validateAuthorization: () => false,
