@@ -1,4 +1,7 @@
 import { type ChangeEvent, useState, type FormEvent } from "react";
+import { useAdmin } from "~/context/AdminContext";
+import { type LoginResStatus } from "~/interfaces/admin";
+import { api } from "~/utils/api";
 
 interface LoginCredentials {
   username: string;
@@ -6,13 +9,42 @@ interface LoginCredentials {
 }
 
 const LoginPage = () => {
+  const { authorizeClient } = useAdmin();
+
   const [formData, setFormData] = useState<LoginCredentials>({
     username: "",
     password: "",
   });
 
+  const loginQuery = api.admin.login.useQuery({
+    user: formData.username,
+    password: formData.password,
+  });
+
   const submitHandler = (e: FormEvent) => {
     e.preventDefault();
+
+    const loginRes = loginQuery.data as {
+      status: LoginResStatus;
+      adminSession: {
+        id: string;
+        expires: Date;
+      };
+    };
+
+    if (!!!loginRes) return;
+
+    if (loginRes.status === "success") {
+      authorizeClient({
+        adminSession: {
+          token: loginRes.adminSession.id,
+          expires: loginRes.adminSession.expires,
+        },
+      });
+
+      window.location.replace("/");
+      return;
+    }
   };
 
   return (
@@ -72,12 +104,10 @@ const LoginPage = () => {
               }
             />
           </div>
-          <button
+          <input
             type="submit"
-            className="my-12 w-full rounded-lg bg-green-700 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-green-800 focus:outline-none focus:ring-4 focus:ring-green-300"
-          >
-            Sign In
-          </button>
+            className="my-12 w-full cursor-pointer rounded-lg bg-green-700 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-green-800 focus:outline-none focus:ring-4 focus:ring-green-300"
+          />
         </div>
       </form>
     </div>

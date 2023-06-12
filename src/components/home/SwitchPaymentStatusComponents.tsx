@@ -22,11 +22,9 @@ const SwitchTicketPaymentStatusPortal = ({
     updateTicket(
       {
         ...ticket,
-        bookingNum: Number(ticket.bookingNum),
       },
       {
         ...ticket,
-        bookingNum: Number(ticket.bookingNum),
         paymentStatus: ticket.paymentStatus === "Paid" ? "Not Paid" : "Paid",
       }
     );

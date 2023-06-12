@@ -7,7 +7,7 @@ import {
   type SetStateAction,
   useEffect,
 } from "react";
-import { DbTicket, type Ticket } from "~/interfaces/ticket";
+import { type DbTicket } from "~/interfaces/ticket";
 import { useTickets } from "./TicketsContext";
 
 /**

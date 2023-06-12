@@ -7,6 +7,7 @@ import { api } from "~/utils/api";
 import "~/styles/globals.css";
 import FiltersProvider from "~/context/FiltersContext";
 import TicketsProvider from "~/context/TicketsContext";
+import AdminProvider from "~/context/AdminContext";
 
 const MyApp: AppType<{ session: Session | null }> = ({
   Component,
@@ -14,11 +15,13 @@ const MyApp: AppType<{ session: Session | null }> = ({
 }) => {
   return (
     <SessionProvider session={session}>
-      <TicketsProvider>
-        <FiltersProvider>
-          <Component {...pageProps} />
-        </FiltersProvider>
-      </TicketsProvider>
+      <AdminProvider>
+        <TicketsProvider>
+          <FiltersProvider>
+            <Component {...pageProps} />
+          </FiltersProvider>
+        </TicketsProvider>
+      </AdminProvider>
     </SessionProvider>
   );
 };

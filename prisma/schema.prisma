@@ -12,12 +12,6 @@ datasource db {
     relationMode = "prisma"
 }
 
-model Example {
-    id        String   @id @default(cuid())
-    createdAt DateTime @default(now())
-    updatedAt DateTime @updatedAt
-}
-
 // Necessary for Next auth
 model Account {
     id                String  @id @default(cuid())
@@ -63,10 +57,15 @@ model VerificationToken {
     @@unique([identifier, token])
 }
 
+model AdminSession {
+    id String @id @default(cuid())
+    expires DateTime
+}
+
 // Agency
 model Ticket {
     id String @id @default(cuid())
-    bookingNum BigInt @db.UnsignedBigInt @unique
+    bookingNum String @unique
     firstName String
     lastName String
     phoneNumber String

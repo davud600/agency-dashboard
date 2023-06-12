@@ -82,7 +82,7 @@ export const RecoverTicketBtn = ({ ticket }: RecoverTicketBtnProps) => {
       {portalOpen && (
         <RecoverTicketPortal
           closePortal={() => setPortalOpen(false)}
-          ticket={{ ...ticket, bookingNum: Number(ticket.bookingNum) }}
+          ticket={{ ...ticket }}
         />
       )}
 

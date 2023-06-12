@@ -1,7 +1,7 @@
 export type TicketPaymentStatus = "Not Paid" | "Paid";
 
 export interface Ticket {
-  bookingNum: number;
+  bookingNum: string;
   firstName: string;
   lastName: string;
   phoneNumber: string;

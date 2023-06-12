@@ -20,7 +20,7 @@ const EditTicketPortal = ({ closePortal, ticket }: EditTicketPortalProps) => {
 
   // Input state
   const [formData, setFormData] = useState<Ticket>({
-    bookingNum: parseInt(ticket.bookingNum.toString()),
+    bookingNum: ticket.bookingNum,
     firstName: ticket.firstName,
     lastName: ticket.lastName,
     phoneNumber: ticket.phoneNumber,
@@ -58,7 +58,6 @@ const EditTicketPortal = ({ closePortal, ticket }: EditTicketPortalProps) => {
             updateTicket(
               {
                 ...ticket,
-                bookingNum: Number(ticket.bookingNum),
               },
               updatedFormData
             );
@@ -69,7 +68,6 @@ const EditTicketPortal = ({ closePortal, ticket }: EditTicketPortalProps) => {
         updateTicket(
           {
             ...ticket,
-            bookingNum: Number(ticket.bookingNum),
           },
           formData
         );
@@ -79,7 +77,6 @@ const EditTicketPortal = ({ closePortal, ticket }: EditTicketPortalProps) => {
       updateTicket(
         {
           ...ticket,
-          bookingNum: Number(ticket.bookingNum),
         },
         formData
       );
@@ -108,7 +105,7 @@ const EditTicketPortal = ({ closePortal, ticket }: EditTicketPortalProps) => {
       </div>
       <div className="pointer-events-none -mt-6 mb-6 flex w-full items-center justify-center">
         <h1 className="text-lg font-medium text-gray-500">
-          Edit Ticket - {ticket.bookingNum.toString()}
+          Edit Ticket - {ticket.bookingNum}
         </h1>
       </div>
       <form
@@ -125,18 +122,17 @@ const EditTicketPortal = ({ closePortal, ticket }: EditTicketPortalProps) => {
                 Ticket Booking Number
               </label>
               <input
-                type="number"
+                type="text"
                 id="bookingNum"
                 className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-600 focus:border-blue-500 focus:ring-blue-500"
-                placeholder="12345678"
-                min={0}
+                placeholder="Booking Number"
                 required
                 value={formData.bookingNum}
                 onChange={(e: ChangeEvent<HTMLInputElement>) =>
                   setFormData((prevFormData) => {
                     return {
                       ...prevFormData,
-                      bookingNum: parseFloat(e.target.value),
+                      bookingNum: e.target.value,
                     };
                   })
                 }
