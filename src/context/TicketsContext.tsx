@@ -91,7 +91,7 @@ const TicketsProvider = ({ children }: { children: ReactNode }) => {
       }
     },
 
-    onError: async () => {
+    onError: () => {
       if (!!document) {
         const errorDialog = document.createElement("div");
         errorDialog.style.position = "absolute";
@@ -135,7 +135,7 @@ const TicketsProvider = ({ children }: { children: ReactNode }) => {
       }
     },
 
-    onError: async () => {
+    onError: () => {
       if (!!document) {
         const errorDialog = document.createElement("div");
         errorDialog.style.position = "absolute";
@@ -179,7 +179,7 @@ const TicketsProvider = ({ children }: { children: ReactNode }) => {
       }
     },
 
-    onError: async () => {
+    onError: () => {
       if (!!document) {
         const errorDialog = document.createElement("div");
         errorDialog.style.position = "absolute";
@@ -223,7 +223,7 @@ const TicketsProvider = ({ children }: { children: ReactNode }) => {
       }
     },
 
-    onError: async () => {
+    onError: () => {
       if (!!document) {
         const errorDialog = document.createElement("div");
         errorDialog.style.position = "absolute";
@@ -267,7 +267,7 @@ const TicketsProvider = ({ children }: { children: ReactNode }) => {
       }
     },
 
-    onError: async () => {
+    onError: () => {
       if (!!document) {
         const errorDialog = document.createElement("div");
         errorDialog.style.position = "absolute";
