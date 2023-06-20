@@ -68,12 +68,12 @@ model Ticket {
     bookingNum String @unique
     firstName String
     lastName String
-    phoneNumber String
+    phoneNumber String?
     price Float
     profitPrice Float
     paymentStatus String
     paymentMemo String? @default("")
-    amadeusCode String @db.LongText
+    amadeusCode String? @db.LongText
     pdfFile String? @db.LongText
     deleted Boolean? @default(false)
     createdAt DateTime @default(now())

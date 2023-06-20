@@ -119,7 +119,7 @@ const EditTicketPortal = ({ closePortal, ticket }: EditTicketPortalProps) => {
                 htmlFor="bookingNum"
                 className="mb-2 block text-sm font-medium text-gray-600"
               >
-                Ticket Booking Number
+                Ticket Booking Number (*)
               </label>
               <input
                 type="text"
@@ -173,7 +173,7 @@ const EditTicketPortal = ({ closePortal, ticket }: EditTicketPortalProps) => {
                 htmlFor="firstName"
                 className="mb-2 block text-sm font-medium text-gray-600"
               >
-                Client First Name
+                Client First Name (*)
               </label>
               <input
                 type="text"
@@ -197,7 +197,7 @@ const EditTicketPortal = ({ closePortal, ticket }: EditTicketPortalProps) => {
                 htmlFor="lastName"
                 className="mb-2 block text-sm font-medium text-gray-600"
               >
-                Client Last Name
+                Client Last Name (*)
               </label>
               <input
                 type="text"
@@ -224,7 +224,7 @@ const EditTicketPortal = ({ closePortal, ticket }: EditTicketPortalProps) => {
                   htmlFor="price"
                   className="mb-2 block text-sm font-medium text-gray-600"
                 >
-                  Ticket Price
+                  Ticket Price (*)
                 </label>
                 <input
                   type="number"
@@ -248,7 +248,7 @@ const EditTicketPortal = ({ closePortal, ticket }: EditTicketPortalProps) => {
                   htmlFor="profitPrice"
                   className="mb-2 block text-sm font-medium text-gray-600"
                 >
-                  Profit Price
+                  Profit Price (*)
                 </label>
                 <input
                   type="number"
@@ -279,8 +279,7 @@ const EditTicketPortal = ({ closePortal, ticket }: EditTicketPortalProps) => {
                 type="text"
                 id="phoneNumber"
                 className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500"
-                placeholder="049 665 876"
-                required
+                placeholder="0xx xxx xxx"
                 value={formData.phoneNumber}
                 onChange={(e: ChangeEvent<HTMLInputElement>) =>
                   setFormData((prevFormData) => {
@@ -303,7 +302,6 @@ const EditTicketPortal = ({ closePortal, ticket }: EditTicketPortalProps) => {
             <textarea
               id="amadeusCode"
               className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500"
-              required
               value={formData.amadeusCode}
               onChange={(e: ChangeEvent<HTMLTextAreaElement>) =>
                 setFormData((prevFormData) => {

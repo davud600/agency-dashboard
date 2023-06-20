@@ -72,6 +72,42 @@ const TicketsProvider = ({ children }: { children: ReactNode }) => {
       await profitsQueryData.refetch();
       await numberOfTicketsQueryData.refetch();
       // setFilteredTicketsList(ticketsList);
+
+      if (!!document) {
+        const successDialog = document.createElement("div");
+        successDialog.style.position = "absolute";
+        successDialog.style.top = "5%";
+        successDialog.style.left = "40%";
+        successDialog.style.padding = "15px";
+        successDialog.style.backgroundColor = "green";
+        successDialog.style.border = "2px solid black";
+        successDialog.style.borderRadius = "15px";
+        successDialog.innerHTML = `<span style='color: white; font-size: 15px;'>Ticket added successfully!</span>`;
+        document.body.appendChild(successDialog);
+
+        setTimeout(() => {
+          successDialog.remove();
+        }, 2500);
+      }
+    },
+
+    onError: () => {
+      if (!!document) {
+        const errorDialog = document.createElement("div");
+        errorDialog.style.position = "absolute";
+        errorDialog.style.top = "5%";
+        errorDialog.style.left = "40%";
+        errorDialog.style.padding = "15px";
+        errorDialog.style.backgroundColor = "red";
+        errorDialog.style.border = "2px solid black";
+        errorDialog.style.borderRadius = "15px";
+        errorDialog.innerHTML = `<span style='color: white; font-size: 15px;'>There was an error while adding the ticket!</span>`;
+        document.body.appendChild(errorDialog);
+
+        setTimeout(() => {
+          errorDialog.remove();
+        }, 2500);
+      }
     },
   });
 
@@ -80,6 +116,42 @@ const TicketsProvider = ({ children }: { children: ReactNode }) => {
       await ticketsQueryData.refetch();
       await profitsQueryData.refetch();
       await numberOfTicketsQueryData.refetch();
+
+      if (!!document) {
+        const successDialog = document.createElement("div");
+        successDialog.style.position = "absolute";
+        successDialog.style.top = "5%";
+        successDialog.style.left = "40%";
+        successDialog.style.padding = "15px";
+        successDialog.style.backgroundColor = "green";
+        successDialog.style.border = "2px solid black";
+        successDialog.style.borderRadius = "15px";
+        successDialog.innerHTML = `<span style='color: white; font-size: 15px;'>Ticket updated successfully!</span>`;
+        document.body.appendChild(successDialog);
+
+        setTimeout(() => {
+          successDialog.remove();
+        }, 2500);
+      }
+    },
+
+    onError: () => {
+      if (!!document) {
+        const errorDialog = document.createElement("div");
+        errorDialog.style.position = "absolute";
+        errorDialog.style.top = "5%";
+        errorDialog.style.left = "40%";
+        errorDialog.style.padding = "15px";
+        errorDialog.style.backgroundColor = "red";
+        errorDialog.style.border = "2px solid black";
+        errorDialog.style.borderRadius = "15px";
+        errorDialog.innerHTML = `<span style='color: white; font-size: 15px;'>There was an error while updating the ticket!</span>`;
+        document.body.appendChild(errorDialog);
+
+        setTimeout(() => {
+          errorDialog.remove();
+        }, 2500);
+      }
     },
   });
 
@@ -88,6 +160,42 @@ const TicketsProvider = ({ children }: { children: ReactNode }) => {
       await ticketsQueryData.refetch();
       await profitsQueryData.refetch();
       await numberOfTicketsQueryData.refetch();
+
+      if (!!document) {
+        const successDialog = document.createElement("div");
+        successDialog.style.position = "absolute";
+        successDialog.style.top = "5%";
+        successDialog.style.left = "40%";
+        successDialog.style.padding = "15px";
+        successDialog.style.backgroundColor = "green";
+        successDialog.style.border = "2px solid black";
+        successDialog.style.borderRadius = "15px";
+        successDialog.innerHTML = `<span style='color: white; font-size: 15px;'>Ticket deleted successfully!</span>`;
+        document.body.appendChild(successDialog);
+
+        setTimeout(() => {
+          successDialog.remove();
+        }, 2500);
+      }
+    },
+
+    onError: () => {
+      if (!!document) {
+        const errorDialog = document.createElement("div");
+        errorDialog.style.position = "absolute";
+        errorDialog.style.top = "5%";
+        errorDialog.style.left = "40%";
+        errorDialog.style.padding = "15px";
+        errorDialog.style.backgroundColor = "red";
+        errorDialog.style.border = "2px solid black";
+        errorDialog.style.borderRadius = "15px";
+        errorDialog.innerHTML = `<span style='color: white; font-size: 15px;'>There was an error while deleting the ticket!</span>`;
+        document.body.appendChild(errorDialog);
+
+        setTimeout(() => {
+          errorDialog.remove();
+        }, 2500);
+      }
     },
   });
 
@@ -96,6 +204,42 @@ const TicketsProvider = ({ children }: { children: ReactNode }) => {
       await ticketsQueryData.refetch();
       await profitsQueryData.refetch();
       await numberOfTicketsQueryData.refetch();
+
+      if (!!document) {
+        const successDialog = document.createElement("div");
+        successDialog.style.position = "absolute";
+        successDialog.style.top = "5%";
+        successDialog.style.left = "40%";
+        successDialog.style.padding = "15px";
+        successDialog.style.backgroundColor = "green";
+        successDialog.style.border = "2px solid black";
+        successDialog.style.borderRadius = "15px";
+        successDialog.innerHTML = `<span style='color: white; font-size: 15px;'>Ticket deleted successfully!</span>`;
+        document.body.appendChild(successDialog);
+
+        setTimeout(() => {
+          successDialog.remove();
+        }, 2500);
+      }
+    },
+
+    onError: () => {
+      if (!!document) {
+        const errorDialog = document.createElement("div");
+        errorDialog.style.position = "absolute";
+        errorDialog.style.top = "5%";
+        errorDialog.style.left = "40%";
+        errorDialog.style.padding = "15px";
+        errorDialog.style.backgroundColor = "red";
+        errorDialog.style.border = "2px solid black";
+        errorDialog.style.borderRadius = "15px";
+        errorDialog.innerHTML = `<span style='color: white; font-size: 15px;'>There was an error while deleting the ticket!</span>`;
+        document.body.appendChild(errorDialog);
+
+        setTimeout(() => {
+          errorDialog.remove();
+        }, 2500);
+      }
     },
   });
 
@@ -104,6 +248,42 @@ const TicketsProvider = ({ children }: { children: ReactNode }) => {
       await ticketsQueryData.refetch();
       await profitsQueryData.refetch();
       await numberOfTicketsQueryData.refetch();
+
+      if (!!document) {
+        const successDialog = document.createElement("div");
+        successDialog.style.position = "absolute";
+        successDialog.style.top = "5%";
+        successDialog.style.left = "40%";
+        successDialog.style.padding = "15px";
+        successDialog.style.backgroundColor = "green";
+        successDialog.style.border = "2px solid black";
+        successDialog.style.borderRadius = "15px";
+        successDialog.innerHTML = `<span style='color: white; font-size: 15px;'>Ticket recovered successfully!</span>`;
+        document.body.appendChild(successDialog);
+
+        setTimeout(() => {
+          successDialog.remove();
+        }, 2500);
+      }
+    },
+
+    onError: () => {
+      if (!!document) {
+        const errorDialog = document.createElement("div");
+        errorDialog.style.position = "absolute";
+        errorDialog.style.top = "5%";
+        errorDialog.style.left = "40%";
+        errorDialog.style.padding = "15px";
+        errorDialog.style.backgroundColor = "red";
+        errorDialog.style.border = "2px solid black";
+        errorDialog.style.borderRadius = "15px";
+        errorDialog.innerHTML = `<span style='color: white; font-size: 15px;'>There was an error while recovering the ticket!</span>`;
+        document.body.appendChild(errorDialog);
+
+        setTimeout(() => {
+          errorDialog.remove();
+        }, 2500);
+      }
     },
   });
 
