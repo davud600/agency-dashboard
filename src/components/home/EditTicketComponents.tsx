@@ -7,7 +7,11 @@ import {
   type ChangeEvent,
 } from "react";
 import { useTickets } from "~/context/TicketsContext";
-import { type TicketPaymentStatus, type Ticket } from "~/interfaces/ticket";
+import {
+  type TicketPaymentStatus,
+  type Ticket,
+  Currency,
+} from "~/interfaces/ticket";
 import { useOutsideClickDetector } from "~/utils/outsideClick";
 
 interface EditTicketPortalProps {
@@ -25,6 +29,7 @@ const EditTicketPortal = ({ closePortal, ticket }: EditTicketPortalProps) => {
     lastName: ticket.lastName,
     phoneNumber: ticket.phoneNumber,
     price: ticket.price,
+    currency: ticket.currency,
     profitPrice: ticket.profitPrice,
     paymentStatus: ticket.paymentStatus,
     amadeusCode: ticket.amadeusCode,
@@ -219,7 +224,35 @@ const EditTicketPortal = ({ closePortal, ticket }: EditTicketPortalProps) => {
           </div>
           <div className="mb-3 flex w-full justify-center gap-2">
             <div className="flex w-1/2 justify-center gap-2">
-              <div className="w-1/2">
+              <div className="w-1/3">
+                <label
+                  htmlFor="priceCurrency"
+                  className="mb-2 block text-sm font-medium text-gray-600"
+                >
+                  Price Currency
+                </label>
+                <select
+                  id="priceCurrency"
+                  className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-600 focus:border-blue-500 focus:ring-blue-500"
+                  onChange={(e) => {
+                    setFormData((prevFormData) => {
+                      return {
+                        ...prevFormData,
+                        currency: e.target.value as Currency,
+                      };
+                    });
+                  }}
+                  value={formData.currency}
+                >
+                  <option className="text-gray-600" value="EUR">
+                    EURO (€)
+                  </option>
+                  <option className="text-gray-600" value="CHF">
+                    CHF (₣)
+                  </option>
+                </select>
+              </div>
+              <div className="w-1/3">
                 <label
                   htmlFor="price"
                   className="mb-2 block text-sm font-medium text-gray-600"
@@ -243,7 +276,7 @@ const EditTicketPortal = ({ closePortal, ticket }: EditTicketPortalProps) => {
                   }
                 />
               </div>
-              <div className="w-1/2">
+              <div className="w-1/3">
                 <label
                   htmlFor="profitPrice"
                   className="mb-2 block text-sm font-medium text-gray-600"

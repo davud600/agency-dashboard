@@ -7,6 +7,7 @@ const TicketObject = z.object({
   lastName: z.string(),
   phoneNumber: z.string(),
   price: z.number(),
+  currency: z.string(),
   profitPrice: z.number(),
   paymentStatus: z.string(),
   paymentMemo: z.string().nullish(),
@@ -95,6 +96,19 @@ export const ticketRouter = createTRPCRouter({
   getTotalProfits: publicProcedure.query(async ({ ctx }) => {
     const totalProfitPrice: { totalSum: number }[] = await ctx.prisma
       .$queryRaw`SELECT SUM(profitPrice) AS totalSum FROM Ticket WHERE deleted = false`;
+
+    return totalProfitPrice[0]?.totalSum;
+  }),
+
+  getTotalProfitsEUR: publicProcedure.query(async ({ ctx }) => {
+    const totalProfitPrice: { totalSum: number }[] = await ctx.prisma
+      .$queryRaw`SELECT SUM(profitPrice) AS totalSum FROM Ticket WHERE deleted = false AND currency = 'EUR'`;
+
+    return totalProfitPrice[0]?.totalSum;
+  }),
+  getTotalProfitsCHF: publicProcedure.query(async ({ ctx }) => {
+    const totalProfitPrice: { totalSum: number }[] = await ctx.prisma
+      .$queryRaw`SELECT SUM(profitPrice) AS totalSum FROM Ticket WHERE deleted = false AND currency = 'CHF'`;
 
     return totalProfitPrice[0]?.totalSum;
   }),

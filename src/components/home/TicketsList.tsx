@@ -29,8 +29,14 @@ export const TicketsList = ({ filteredTickets }: TicketsListProps) => {
             {ticket.firstName} {ticket.lastName}
           </td>
           <td className="p-2">{ticket.phoneNumber}</td>
-          <td className="p-2">{ticket.price}€</td>
-          <td className="p-2">{ticket.profitPrice}€</td>
+          <td className="p-2">
+            {ticket.price}
+            {ticket.currency === "EUR" ? "€" : "₣"}
+          </td>
+          <td className="p-2">
+            {ticket.profitPrice}
+            {ticket.currency === "EUR" ? "€" : "₣"}
+          </td>
           <td
             className="p-2"
             style={{

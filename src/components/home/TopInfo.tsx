@@ -1,12 +1,23 @@
 import { useTickets } from "~/context/TicketsContext";
 
-const TotalPrice = () => {
-  const { totalProfits } = useTickets();
+const TotalPriceEUR = () => {
+  const { totalProfitsEUR } = useTickets();
 
   return (
     <div className="flex gap-2 text-sm">
-      <span>Total Profits: </span>
-      <span className="font-semibold">{totalProfits}€</span>
+      <span>Total Profits (EUR): </span>
+      <span className="font-semibold">{totalProfitsEUR}€</span>
+    </div>
+  );
+};
+
+const TotalPriceCHF = () => {
+  const { totalProfitsCHF } = useTickets();
+
+  return (
+    <div className="flex gap-2 text-sm">
+      <span>Total Profits (CHF): </span>
+      <span className="font-semibold">{totalProfitsCHF}₣</span>
     </div>
   );
 };
@@ -25,7 +36,8 @@ const TotalNumberOfTickets = () => {
 const TopInfo = () => {
   return (
     <div className="my-2 flex w-full justify-start gap-8">
-      <TotalPrice />
+      <TotalPriceEUR />
+      <TotalPriceCHF />
       <TotalNumberOfTickets />
     </div>
   );

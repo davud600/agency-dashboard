@@ -70,6 +70,7 @@ model Ticket {
     lastName String
     phoneNumber String?
     price Float
+    currency String @default("EUR")
     profitPrice Float
     paymentStatus String
     paymentMemo String? @default("")

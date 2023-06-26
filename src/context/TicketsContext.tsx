@@ -15,6 +15,8 @@ interface TicketsContextType {
   totalNumberOfTickets: number;
   filteredTickets: DbTicket[];
   totalProfits: number;
+  totalProfitsEUR: number;
+  totalProfitsCHF: number;
   setFilteredTicketsList: Dispatch<SetStateAction<DbTicket[]>>;
   createTicket: (ticketData: Ticket) => void;
   updateTicket: (ticketToUpdate: Ticket, ticketData: Ticket) => void;
@@ -33,6 +35,8 @@ export const TicketsContext = createContext<TicketsContextType>({
   totalNumberOfTickets: 0,
   filteredTickets: [],
   totalProfits: 0,
+  totalProfitsEUR: 0,
+  totalProfitsCHF: 0,
   setFilteredTicketsList: () => false,
   createTicket: () => false,
   updateTicket: () => false,
@@ -57,12 +61,16 @@ const TicketsProvider = ({ children }: { children: ReactNode }) => {
   const [ticketsList, setTicketsList] = useState<DbTicket[]>([]);
   const [totalNumberOfTickets, setTotalNumberOfTickets] = useState<number>(0);
   const [totalProfits, setTotalProfits] = useState<number>(0);
+  const [totalProfitsEUR, setTotalProfitsEUR] = useState<number>(0);
+  const [totalProfitsCHF, setTotalProfitsCHF] = useState<number>(0);
 
   const [filteredTickets, setFilteredTicketsList] =
     useState<DbTicket[]>(ticketsList);
 
   const ticketsQueryData = api.tickets.getAllLimited.useQuery({ limit, page });
   const profitsQueryData = api.tickets.getTotalProfits.useQuery();
+  const profitsEURQueryData = api.tickets.getTotalProfitsEUR.useQuery();
+  const profitsCHFQueryData = api.tickets.getTotalProfitsCHF.useQuery();
   const numberOfTicketsQueryData =
     api.tickets.getTotalNumberOfTickets.useQuery();
 
@@ -70,6 +78,8 @@ const TicketsProvider = ({ children }: { children: ReactNode }) => {
     onSuccess: async () => {
       await ticketsQueryData.refetch();
       await profitsQueryData.refetch();
+      await profitsEURQueryData.refetch();
+      await profitsCHFQueryData.refetch();
       await numberOfTicketsQueryData.refetch();
       // setFilteredTicketsList(ticketsList);
 
@@ -115,6 +125,8 @@ const TicketsProvider = ({ children }: { children: ReactNode }) => {
     onSuccess: async () => {
       await ticketsQueryData.refetch();
       await profitsQueryData.refetch();
+      await profitsEURQueryData.refetch();
+      await profitsCHFQueryData.refetch();
       await numberOfTicketsQueryData.refetch();
 
       if (!!document) {
@@ -159,6 +171,8 @@ const TicketsProvider = ({ children }: { children: ReactNode }) => {
     onSuccess: async () => {
       await ticketsQueryData.refetch();
       await profitsQueryData.refetch();
+      await profitsEURQueryData.refetch();
+      await profitsCHFQueryData.refetch();
       await numberOfTicketsQueryData.refetch();
 
       if (!!document) {
@@ -203,6 +217,8 @@ const TicketsProvider = ({ children }: { children: ReactNode }) => {
     onSuccess: async () => {
       await ticketsQueryData.refetch();
       await profitsQueryData.refetch();
+      await profitsEURQueryData.refetch();
+      await profitsCHFQueryData.refetch();
       await numberOfTicketsQueryData.refetch();
 
       if (!!document) {
@@ -247,6 +263,8 @@ const TicketsProvider = ({ children }: { children: ReactNode }) => {
     onSuccess: async () => {
       await ticketsQueryData.refetch();
       await profitsQueryData.refetch();
+      await profitsEURQueryData.refetch();
+      await profitsCHFQueryData.refetch();
       await numberOfTicketsQueryData.refetch();
 
       if (!!document) {
@@ -303,6 +321,22 @@ const TicketsProvider = ({ children }: { children: ReactNode }) => {
     setTotalProfits(parseFloat((totalProfits as number).toFixed(2)));
   }, [profitsQueryData]);
 
+  // Duplicate this for each currency
+  useEffect(() => {
+    const totalProfitsEUR: unknown = profitsEURQueryData.data;
+
+    if (!!!totalProfitsEUR) return;
+
+    setTotalProfitsEUR(parseFloat((totalProfitsEUR as number).toFixed(2)));
+  }, [profitsEURQueryData]);
+  useEffect(() => {
+    const totalProfitsCHF: unknown = profitsCHFQueryData.data;
+
+    if (!!!totalProfitsCHF) return;
+
+    setTotalProfitsCHF(parseFloat((totalProfitsCHF as number).toFixed(2)));
+  }, [profitsCHFQueryData]);
+
   useEffect(() => {
     const totalNumberOfTickets: unknown = numberOfTicketsQueryData.data;
 
@@ -356,6 +390,8 @@ const TicketsProvider = ({ children }: { children: ReactNode }) => {
     totalNumberOfTickets,
     filteredTickets,
     totalProfits,
+    totalProfitsEUR,
+    totalProfitsCHF,
     setFilteredTicketsList,
     createTicket,
     updateTicket,
