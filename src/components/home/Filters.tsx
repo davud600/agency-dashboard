@@ -1,4 +1,4 @@
-import { type ChangeEvent, useRef, useState } from "react";
+import { type ChangeEvent, useRef, useState, useEffect } from "react";
 import {
   useDeletedFilter,
   usePaymentStatusFilter,
@@ -8,6 +8,10 @@ import { useOutsideClickDetector } from "~/utils/outsideClick";
 import { AddTicketBtn } from "./AddTicketComponents";
 import { useTickets } from "~/context/TicketsContext";
 import { DeleteAllTicketsBtn } from "./DeleteAllTicketsBtn";
+import { api } from "~/utils/api";
+import { type DbTicket, type Ticket } from "~/interfaces/ticket";
+import { write, utils } from "xlsx";
+import { saveAs } from "file-saver";
 
 const PaymentStatusDropdown = () => {
   const { paymentStatus, setPaymentStatus } = usePaymentStatusFilter();
@@ -172,6 +176,93 @@ const SearchFilter = () => {
           }
         />
       </div>
+    </>
+  );
+};
+
+const DownloadExcelBtn = () => {
+  const downloadExcelTableData = api.tickets.getAll.useQuery(undefined, {
+    refetchOnWindowFocus: false,
+    enabled: false, // disable this query from automatically running
+  });
+  const [data, setData] = useState<Ticket[]>([]);
+  const [downloadingFile, setDownloadingFile] = useState<boolean>(false);
+
+  useEffect(() => {
+    const tickets: unknown = downloadExcelTableData.data;
+
+    if (!!!tickets) return;
+
+    setData(tickets as DbTicket[]);
+  }, [downloadExcelTableData]);
+
+  useEffect(() => {
+    if (!downloadingFile) return;
+
+    setDownloadingFile(false);
+
+    const worksheet = utils.json_to_sheet(data);
+    const workbook = utils.book_new();
+    utils.book_append_sheet(workbook, worksheet, "Table Data");
+
+    const excelData: string | undefined = write(workbook, {
+      type: "base64",
+      bookType: "xlsx",
+    }) as string | undefined;
+
+    if (!!!excelData) return;
+
+    const downloadExcel = (data: string, filename: string) => {
+      const base64ToBlob = (base64: string) => {
+        const binaryString = window.atob(base64);
+        const len = binaryString.length;
+        const bytes = new Uint8Array(len);
+        for (let i = 0; i < len; i++) {
+          bytes[i] = binaryString.charCodeAt(i);
+        }
+        return new Blob([bytes], {
+          type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+        });
+      };
+
+      const blob = base64ToBlob(data);
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-call
+      saveAs(blob, filename);
+    };
+
+    // Split the base64 data into chunks if needed
+    const chunkSize = 32700;
+    const totalChunks = Math.ceil(excelData.length / chunkSize);
+
+    for (let i = 0; i < totalChunks; i++) {
+      const start = i * chunkSize;
+      const end = start + chunkSize;
+      const chunk = excelData.substring(start, end);
+      const filename = `table_data_${i + 1}.xlsx`;
+      downloadExcel(chunk, filename);
+    }
+  }, [downloadingFile, data]);
+
+  const refetchData = async () => {
+    if (!!!data || data.length === 0) {
+      await downloadExcelTableData.refetch();
+    }
+  };
+
+  const handleDownload = async () => {
+    await refetchData();
+    setDownloadingFile(true);
+  };
+
+  return (
+    <>
+      <button
+        // eslint-disable-next-line @typescript-eslint/no-misused-promises
+        onClick={handleDownload}
+        className="inline-flex items-center rounded-lg border border-gray-300 bg-white px-3 py-1.5 text-sm font-medium text-gray-500 transition-all hover:border-lime-600 hover:bg-lime-600 hover:text-white"
+      >
+        Download Table in Excel
+      </button>
     </>
   );
 };
@@ -384,6 +475,9 @@ const Filters = () => {
       </div>
 
       <div className="flex justify-end gap-1">
+        {/* Download Excel File */}
+        <DownloadExcelBtn />
+
         {/* Search Filter */}
         <SearchFilter />
 

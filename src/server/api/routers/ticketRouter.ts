@@ -20,6 +20,22 @@ export const ticketRouter = createTRPCRouter({
   getAll: publicProcedure.query(async ({ ctx }) => {
     return await ctx.prisma.ticket.findMany({
       orderBy: { createdAt: "desc" },
+      select: {
+        id: true,
+        bookingNum: true,
+        firstName: true,
+        lastName: true,
+        phoneNumber: true,
+        price: true,
+        currency: true,
+        profitPrice: true,
+        paymentStatus: true,
+        paymentMemo: true,
+        amadeusCode: true,
+        deleted: true,
+        createdAt: true,
+        updatedAt: true,
+      },
     });
   }),
 
